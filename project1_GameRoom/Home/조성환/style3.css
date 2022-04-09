@@ -1,0 +1,155 @@
+body {
+    margin: 0;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #263343;
+    padding: 8px 12px;
+}
+
+.navbar a {
+    color: white;
+}
+
+.navbar__logo {
+    font-size: 24px;
+    color: white;
+}
+
+.navbar__logo i {
+    color: #d49466;
+}
+
+.navbar__menu {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+}
+
+.navbar__menu li {
+    padding: 8px 45px;
+}
+
+.navbar__menu li:hover {
+    background-color: #d49466;
+    border-radius: 4px;
+}
+
+.navbar__login {
+    list-style: none;
+    color: white;
+    display: flex;
+    padding-left: 0;
+}
+
+.navbar__login li {
+    padding: 8px 12px;
+    border-bottom: 2px solid #263343;
+}
+
+.navbar__login li:hover {
+    border-bottom: 2px solid white;
+}
+
+.navbar__toggleBtn {
+    display: none;
+    position: absolute;
+    right: 32px;
+    font-size: 24px;
+    color: #d49466;
+}
+
+.main {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 8px 12px;
+}
+
+.banner {
+    width: 1440px;
+    height: 600px;
+    margin: auto;
+    border: 2px solid gray;
+    padding-bottom: 8px;
+}
+
+.boards {
+    display: flex;
+    justify-content: space-between;
+    width: 1440px;
+    height: 600px;
+    margin: auto;
+}
+
+.board1, .board2, .board3 {
+    width: 30%;
+    height: 500px;
+    padding-top: 8px;
+}
+
+.board1__header, .board2__header, .board3__header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid gray;
+}
+
+
+
+@media screen and (max-width: 970px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px 24px;
+    }
+
+    .navbar__menu {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .navbar__menu li {
+        width: 100%;
+        padding: 8px 0;
+        text-align: center;
+    }
+
+    .navbar__login {
+        display: none;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .navbar__toggleBtn {
+        display: block;
+    }
+
+    .navbar__menu.active,
+    .navbar__login.active {
+        display: flex;
+    }
+}
+
+@media screen and (max-width: 1440px) {
+
+    .boards {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .board1, .board2, .board3 {
+        width: 100%;
+        height: 500px;
+    }
+}
