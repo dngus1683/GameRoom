@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>실습 3-2</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+ rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> <!-- 부트스트랩 -->
+ <script type="text/javascript">
+ 	//addItem()함수 구현
+ 	function addItem(){
+ 		//입력값을 읽어와 todo 변수에 저장
+ 		let todo = document.getElementById("item");
+ 		//<ul> 요소를 참조하여 list 변수에 저장
+ 		let list = document.getElementById("todolist");
+ 		//새로운 <li> 요소를 생성하여 listitem 변수에 저장
+ 		let listitem = document.createElement("li");
+ 		//<li> 요소에 들어갈 닫기 버튼 생성
+ 		let xbtn = document.createElement("button");
+ 		//새로운 할 일 아이템에 디자인을 부여하기 위해 부트스트랩 클래스를 추가하고 <li> 요소의 보디 부분에 추가한다.
+ 		//새로운 목록에 디자인추가
+ 		listitem.className = "d-flex list-group-item list-group-item-action list-group-item-warning";
+ 		//버튼에 부트스트랩 클래스 적용
+ 		xbtn.className = "btn-close ms-auto";
+ 		//추가된 x버튼이 눌렸을 때 이벤트 처리 
+ 		xbtn.onclick = function(e) {
+ 			//이벤트가 발생한 <li> 요소를 구하여 <ul> 요소에서 제거
+ 			let pnode = e.target.parentNode;
+ 			list.removeChild(pnode);
+ 		}
+ 		//입력값을 <li> 태그 보디에 추가
+ 		listitem.innerText = todo.value;
+ 		//ul  요쇼에 li 요소 추가.
+ 		list.appendChild(listitem);
+ 		listitem.appendChild(xbtn);
+ 		//입력칸 비우기 및 포커스 이동
+ 		todo.value = "";
+ 		todo.focus();
+ 	}
+ </script>
+</head>
+<body>
+	<!-- 메인 박스 디자인 -->
+	<div class="container bg-warning shadow mx-auto mt-5 p-5 w-75"> 
+	<!-- container: 화면 전체를 차지하지 않는 고정 크기 컨테이너로 브라우저 크기 변동에 반응해서 변함. -->
+	<!-- bg-warning: 기본 노란색(warning) 컬러로 배경색을 지정한다. shadow: 박수 테두리에 그림자 효과를 추가한다.  -->
+	<!-- mt-5: 박스가 브라우저 상단에 붙어 있지 않도록 최대 상단 마진margin top을 설정(0~5단계) p-5: 박스 안쪽에 텍스트가 테두리에 붙어 있지 않도록 안쪽 패딩 설정 w-75박스 크기를 브라우저 크기의 75% -->
+		<h2>My ToDo App</h2>
+		<hr>
+		<div class="input-group"> <!-- input-group" 입력 요소를 같은 라인에 보기 좋게 연결되도록 묶어준다. -->
+			<input id="item" class="form-control" type="text" placeholder="할일을 입력하세요.."> <!-- 입력 필드에 사용자가 적절한 값을 입력할 수 있도록 도와주는 짧은 도움말 명시 --><!-- form-control입력 요소에 기본적인 디자인을 적용한다. -->
+			<button type="button" class="btn btn-primary" onclick="addItem()">할일 추가</button>	<!-- btn btn-primary: 파란색 버튼을 생성한다. -->
+		</div>
+		<hr>
+		<ul id="todolist" class="list-group"></ul>
+
+</body>
+</html>
