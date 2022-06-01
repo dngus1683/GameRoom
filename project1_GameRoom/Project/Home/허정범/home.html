@@ -1,0 +1,128 @@
+ <!DOCTYPE html>
+ <html>
+   <head>
+     <title>our blog_home</title>
+     <meta charset="utf-8">
+    <style>
+      h1 {
+        text-align: center;
+        border-bottom: 2px solid #CCCCCC
+      }
+      .main_image {
+        position: relative;
+        left : 60px;
+      }
+
+      .menu_text{
+        display: grid;
+        grid-template-columns: 150px 1fr;
+
+      }
+      .main{
+        display: grid;
+        border : 5px solid #CCCCCC;
+        grid-template-rows: 1fr 1fr;
+        padding: 15px;
+        margin: 3px;
+      }
+      img{
+        height: 500px;
+        margin: 15px;
+      }
+      .category{
+
+        border-top: 3px solid #CCCCCC;
+        border-bottom : 3px solid #CCCCCC;
+        padding : 5px;
+
+      }
+      .main_text{
+        display : grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows : 1fr 1fr;
+      }
+      .bulletin, .visitors, .vitic, .attendance{
+        border-width:5px;
+        border-color:pink;
+        border-style:solid;
+        margin: 5px;
+        text-align: left;
+      }
+      .login_menu{
+        display : grid;
+        grid-template-rows: 150px 1fr;
+        padding: 15px;
+      }
+      .login{
+        border-top: 3px solid #CCCCCC;
+        border-bottom:3px solid #CCCCCC;
+        margin: 0px;
+        padding: 5px;
+
+      }
+    input{
+      float : right;
+      margin : 5px;
+    }
+    </style>
+   </head>
+   <body>
+     <h1>우리 블로그</h1>
+     <div class="menu_text">
+       <div class="login_menu">
+         <div class="login">
+           여기는 로그인!
+           유저아이콘 유저정보
+           등등등등등등등등
+         </div>
+         <ul class="category">
+           <li>로그인</li>
+           <li>출석체크</li>
+           <li>게시판</li>
+           <li>방명록</li>
+           <li>비틱방</li>
+           <li>미니게임방</li>
+           <li>로그인</li>
+           <li>출석체크</li>
+           <li>게시판</li>
+           <li>방명록</li>
+           <li>비틱방</li>
+           <li>미니게임방</li>
+         </ul>
+       </div>
+       <div class="main">
+         <div class="main_image">
+           <img src="arcana.jpg">
+
+         </div>
+         <div class="main_text">
+
+           <div class="bulletin">
+             <div class="">
+               여기는 게시판!
+               <input type="button" name="more" value="더보기" >
+             </div>
+           </div>
+           <div class="visitors">
+             <div class="">
+                여기는 방명록!
+                <input type="button" name="more" value="더보기" >
+             </div>
+           </div>
+           <div class="vitic">
+             <div class="">
+                여기는 비틱방!
+                <input type="button" name="more" value="더보기" >
+             </div>
+           </div>
+           <div class="attendance">
+             <div class="">
+               <input type="button" name="more" value="더보기" >
+               여기는 출석체크!
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </body>
+ </html>

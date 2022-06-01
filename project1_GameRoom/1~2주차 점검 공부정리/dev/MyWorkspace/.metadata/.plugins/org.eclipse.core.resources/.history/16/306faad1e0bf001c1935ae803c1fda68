@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회원가입 폼 만들기 예제</title>
+<style>
+h2 {
+	border-radius: 5px; /*박스의 모서리를 둥글게 설정*/
+	background-color: wheat;
+	text-align: center;
+	padding: 15px 0; /*padding 뒤에 2개의 속성값을 가지면 top과 bottom, right와 left 순으로 설정*/ 
+	}
+#regform{
+	padding: 15px 20px;
+	border-radius: 10px;
+	margin: auto; /*auto를 하면 중앙에 배치가 된다*/
+	width: 50%;
+	background-color: SandyBrown;
+	}
+</style>
+</head>
+<body>
+	<h2>회원가입</h2>
+	<hr>	<!--hr 태그는 수평선 그리기 태그-->
+	<div id="regform">
+	<!-- form 태그는 알게모르게 웹에서 사용을 많이 한다. 사용자 의견이나 정보를 알기 위해 입력할 큰 틀을만드는데 사용. 폼은 입력된 데이터를 한 번에 서버로 전송. 전송한 데이터는 웹 서버가 처리하고,
+	 결과에 따른 또 다른 웹 페이지를 보여줌. -->
+	 <form name="form1">
+	 	<label> <!-- label태그는 사용자 인터페이스(UI)요소의 라벨(label)을 정의할 때 사용. label요소는 for 속성을 사용하여 다른 요소와 결함할 수 있으며, 이때 label 요소의 for 속성값은 결합하고자
+	 	하는 요소의 id 속성갑과 같아야 함. 이러한 label 요소는 브라우저에 의해 일반적인 텍스트로 랜더링 되지만, 사용자가 마우스로 해당 텍스트를 클릭할 경우 label 요소와 연겨로딘 요소를 곧바로 선택할 수 있다. -->
+	 	이름
+	 	</label><br>
+	 	<input type="text" name="name" size="40"><br>
+	 	<hr>
+	 	<label>이메일</label><br>
+	 	<input type="text" name="email" size="40"><br>
+	 	<button type="button" onclick="signUp()">가입</button>
+	 </form>
+	</div>
+	<div id="result" class = "result"> <!-- 입력 양식과 같은 위치에 대체할 수 잇는 박스를 새로 만들고 화면에는 보이지 않도록 하고, 가입 버튼을 누르면 입력 양식은 지우고 결과 박스가 보이도록 한다.  -->
+		<h3>가입 정보</h3>
+		<hr>
+		이름: <span id="rname"></span><br> <!-- span 태그는 div 태그처럼 특별한 기능을 갖고있지 않고, CSS와 함게 쓰입니다. div태그와 차이점은 display 속성이 block이 아닌 inline이라는 점!
+											쉽게 말하면 div는 줄바꿈이 되지만 span 은 줄 바꿈이 되지 않는다 -->
+		이메일: <span id="remail"></span><br>
+	</div>
+	<!-- 이대로 실행하면 입력 양식 아래에 박스가 출력된다. 추가로 자바스크립트를 추가해 화면에 보이지 않도록 하고 가입 버튼을 누르면 보이게 해준다. -->
+	<script type="text/javascript"> //head 부분에 작성할 경우 html 파일이 모두 로딩이 되지 않은 상태라 속성 지정이 불가능하므로 결과 화면 코드 이후에 스크립트가 와야 한다. 
+		documet.getElementById("result").style.display="none"; //id가 result인 영역에 CSS 속성 display = "none"을 부여한다.
+	</script>
+	
+</body>
+</html>

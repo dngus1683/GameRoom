@@ -1,0 +1,39 @@
+a {
+  text-decoration: none;
+  color: inherit;
+}
+.login_row {
+  float: right;
+  position: relative;
+  right: 30px;
+}
+.login {
+  display: inline-block;
+}
+.login_a{
+  position: relative;
+  bottom: 6px;
+}
+h1 {
+  font-size: 65px;
+  text-align: center;
+  position: relative;
+  top: 50px;
+}
+.menu_row {
+  text-align: center;
+  height: 300px;
+  position: relative;
+  top: 100px;
+}
+.menu {
+  text-align: center;
+  display: inline-block;
+  width: 250px;
+  height: 250px;
+  line-height: 250px;
+  border: 1px solid red;
+  border-radius: 10px;
+  margin: 20px;
+  position: relative;
+}
