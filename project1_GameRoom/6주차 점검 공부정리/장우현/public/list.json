@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 [
   {"id":1, "title": "HTML"},
   {"id":2, "title": "CSS"},
   {"id":3, "title": "JS"}
 ]
+=======
+[
+  {"id":1, "title": "HTML"},
+  {"id":2, "title": "CSS"},
+  {"id":3, "title": "JS"}
+]
+>>>>>>> c7b352568c7d820b6022189a776b8998b60587c9

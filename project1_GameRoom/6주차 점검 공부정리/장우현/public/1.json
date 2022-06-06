@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 {
   "id": "1",
   "title": "HTML",
   "desc": "HTML is..." 
 }
+=======
+{
+  "id": "1",
+  "title": "HTML",
+  "desc": "HTML is..." 
+}
+>>>>>>> c7b352568c7d820b6022189a776b8998b60587c9
