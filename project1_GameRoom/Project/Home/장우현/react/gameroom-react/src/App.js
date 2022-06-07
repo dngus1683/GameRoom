@@ -1,14 +1,15 @@
 import './App.css';
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+
 
 function LoginRow(){
   return(
-    <div class="login_row">
-      <div class="login">
+    <div className="login_row">
+      <div className="login">
         <a href="Login.html"><img src={require('./Img/icon_Login.png')}/></a>
       </div>
-      <div class="login">
-        <a href="Login.html" class="login_a">로그인</a>
+      <div className="login">
+        <a href="Login.html" className="login_a">로그인</a>
       </div>
     </div>
   );
@@ -17,7 +18,7 @@ function LoginRow(){
 function Head(){
   return(
     <div>
-      <h1 class="Home_head">GameRoom</h1>
+      <h1 className="Home_head">GameRoom</h1>
     </div>
   );
 }
@@ -27,11 +28,11 @@ function MenuRow(props){
   for(var i=0;i<props.list.length;i++){
     var li = props.list[i];
     listTag.push(
-        <div class="menu"><a>{li.title}</a></div>
+        <div className="menu" key={li.id}><a>{li.title}</a></div>
     )
   }
   return(
-    <div class="menu_row">
+    <div className="menu_row">
       {listTag}
     </div>
   );
@@ -39,25 +40,28 @@ function MenuRow(props){
 
 
 function App() {
-  const [menu, setMenu] = useState();
-
-
-  fetch('list.json')
+  const [menu, setMenu] = useState([]);
+  const fetch_list = ()=> {
+    fetch('list.json')
   .then(function(result){
     return result.json();
   })
   .then(function(json){
-    console.log(json);
-    this.setState({list:{
-      items:json,
-      isLoading: false
-    }});
+    setMenu(json);
   })
+  }
+
+  // useEffect를 사용하지 않고 바로 fetch를 한다면, useState로 인해 rendering이 무한으로 실행된다.
+  // 때문에 앱이 실행될 때, 최초로 한번만 fetch하도록 useEffect를 사용한다.
+  useEffect(() => {
+    fetch_list();
+  });
+
   return (
     <div className="App">
       <LoginRow/>
       <Head/>
-      <MenuRow list={list.json}/>
+      <MenuRow list={menu}/>
     </div>
   );
 }
