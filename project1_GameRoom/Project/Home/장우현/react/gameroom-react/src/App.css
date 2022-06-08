@@ -37,3 +37,25 @@ h1 {
   margin: 20px;
   position: relative;
 }
+
+#gate_h1 {
+  font-size: 100px;
+  text-align: center;
+  margin: 75px;
+  position: relative;
+  top: 50px;
+}
+
+#gate_h2 {
+  font-size: 75px;
+  text-align: center;
+  margin: 75px;
+  position: relative;
+  top: 50px;
+}
+
+#gate_div {
+  text-align: center;
+  position: relative;
+  top: 50px;
+}

@@ -1,6 +1,17 @@
 import './App.css';
 import React, {useState, useEffect} from 'react'
 
+function Gate(){
+  return(
+    <div>
+      <h1 id='gate_h1'> GameRoom </h1>
+      <h2 id='gate_h2'> Invitation </h2>
+      <div id='gate_div'>
+        <a href="Home.html"><img src={require("./Img/icon_On.png")} width="75"/></a>
+      </div>
+    </div>
+  );
+}
 
 function LoginRow(){
   return(
@@ -18,7 +29,7 @@ function LoginRow(){
 function Head(){
   return(
     <div>
-      <h1 className="Home_head">GameRoom</h1>
+      <h1 className="Home_head"><a href="Gate.html">GameRoom</a></h1>
     </div>
   );
 }
@@ -50,7 +61,6 @@ function App() {
     setMenu(json);
   })
   }
-
   // useEffect를 사용하지 않고 바로 fetch를 한다면, useState로 인해 rendering이 무한으로 실행된다.
   // 때문에 앱이 실행될 때, 최초로 한번만 fetch하도록 useEffect를 사용한다.
   useEffect(() => {
@@ -62,6 +72,7 @@ function App() {
       <LoginRow/>
       <Head/>
       <MenuRow list={menu}/>
+      <Gate/>
     </div>
   );
 }
