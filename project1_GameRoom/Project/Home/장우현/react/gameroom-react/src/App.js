@@ -1,14 +1,28 @@
 import './App.css';
 import React, {useState, useEffect} from 'react'
+import {Route, NavLink, useParams, Routes, BrowserRouter, Link} from 'react-router-dom'
 
+//==========================================================================================================
 function Gate(){
   return(
     <div>
       <h1 id='gate_h1'> GameRoom </h1>
       <h2 id='gate_h2'> Invitation </h2>
       <div id='gate_div'>
-        <a href="Home.html"><img src={require("./Img/icon_On.png")} width="75"/></a>
+        <Link to="/Home"><img src={require("./Img/icon_On.png")} alt="Home" width="75"/></Link>
       </div>
+    </div>
+  );
+}
+//==========================================================================================================
+
+//==========================================================================================================
+function Home(props){
+  return(
+    <div>
+      <LoginRow/>
+      <Head/>
+      <MenuRow list={props.list}/>
     </div>
   );
 }
@@ -17,10 +31,10 @@ function LoginRow(){
   return(
     <div className="login_row">
       <div className="login">
-        <a href="Login.html"><img src={require('./Img/icon_Login.png')}/></a>
+        <NavLink to="/Login"><img src={require('./Img/icon_Login.png')} alt="Login"/></NavLink>
       </div>
       <div className="login">
-        <a href="Login.html" className="login_a">로그인</a>
+        <NavLink to="/Login" className="login_a">로그인</NavLink>
       </div>
     </div>
   );
@@ -29,7 +43,7 @@ function LoginRow(){
 function Head(){
   return(
     <div>
-      <h1 className="Home_head"><a href="Gate.html">GameRoom</a></h1>
+      <h1 className="Home_head"><Link to="/">GameRoom</Link></h1>
     </div>
   );
 }
@@ -39,7 +53,7 @@ function MenuRow(props){
   for(var i=0;i<props.list.length;i++){
     var li = props.list[i];
     listTag.push(
-        <div className="menu" key={li.id}><a>{li.title}</a></div>
+        <div className="menu" key={li.id}><a href='#!'>{li.title}</a></div>
     )
   }
   return(
@@ -48,8 +62,9 @@ function MenuRow(props){
     </div>
   );
 }
+//==========================================================================================================
 
-
+//==========================================================================================================
 function App() {
   const [menu, setMenu] = useState([]);
   const fetch_list = ()=> {
@@ -69,12 +84,16 @@ function App() {
 
   return (
     <div className="App">
-      <LoginRow/>
-      <Head/>
-      <MenuRow list={menu}/>
-      <Gate/>
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<Gate/>}></Route>
+          <Route path="/Home" element={<Home list={menu}/>}></Route>
+          <Route path="*" element="Not Found"></Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
 
 export default App;
+//==========================================================================================================
