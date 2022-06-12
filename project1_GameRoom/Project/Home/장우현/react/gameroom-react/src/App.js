@@ -6,7 +6,7 @@ import {Route, NavLink, useParams, Routes, BrowserRouter, Link} from 'react-rout
 function Gate(){
   return(
     <div>
-      <h1 id='gate_h1'> GameRoom </h1>
+      <h1 id='ateg_h1'> GameRoom </h1>
       <h2 id='gate_h2'> Invitation </h2>
       <div id='gate_div'>
         <Link to="/Home"><img src={require("./Img/icon_On.png")} alt="Home" width="75"/></Link>
