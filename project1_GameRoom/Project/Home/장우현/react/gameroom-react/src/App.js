@@ -53,8 +53,8 @@ function MenuRow(props){
   for(var i=0;i<props.list.length;i++){
     var li = props.list[i];
     listTag.push(
-        <div className="menu" key={li.id}><a href='#!'>{li.title}</a></div>
-    )
+        <div className="menu" key={li.id}><Link to='/NoticeBoard'>{li.title}</Link></div>
+    );
   }
   return(
     <div className="menu_row">
@@ -62,25 +62,97 @@ function MenuRow(props){
     </div>
   );
 }
+
+//==========================================================================================================
+
+//==========================================================================================================
+function NoticeBoard(){
+  return(
+    <div>
+      <LoginRow/>
+      <h2 className='NoticeBoard_head'><Link to="/Home">GameRoom</Link></h2>
+    </div>
+  );
+}
+
+function NoticeBoardList(props) {
+  var listTag = [];
+  for(var i=0; i<props.list.length; i++){
+    var li = props.list[i];
+    listTag.push(
+      <NavLink to={'/NoticeBoard/'+li.id} key={li.id}>
+        <article className='post'>
+          <h3>{li.title}</h3>
+          {li.main_text}
+          <hr ></hr>
+        </article>
+      </NavLink>
+    );
+  }
+  return(
+    <div>
+      <NoticeBoard/>
+      <div className="NoticeBoard_Main">
+        {listTag}
+      </div>
+    </div>
+  );
+}
+
+function NoticeBoardPost(props){
+  var params = useParams();
+  var post_id = params.post_id;
+  var selected_post = {
+    title:'Sorry',
+    main_text:'Not Found'
+  }
+  for(var i=0; i<props.list.length; i++){
+    var li = props.list[i];
+    if(li.id === Number(post_id)){
+      selected_post = li;
+      break;
+    }
+  }
+  return(
+    <div>
+      <NoticeBoard/>
+      <div className="NoticeBoard_Main">
+        <article className='post'>
+          <h3>{selected_post.title}</h3>
+          <hr ></hr>
+          {selected_post.main_text}
+        </article>
+      </div>
+    </div>
+
+  );
+}
 //==========================================================================================================
 
 //==========================================================================================================
 function App() {
   const [menu, setMenu] = useState([]);
-  const fetch_list = ()=> {
-    fetch('list.json')
+  const [post,setPost] = useState([]);
+  const fetch_list = (list,setState)=> {
+    fetch(list,{
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+       }
+      })
   .then(function(result){
     return result.json();
   })
   .then(function(json){
-    setMenu(json);
+    setState(json);
   })
   }
   // useEffect를 사용하지 않고 바로 fetch를 한다면, useState로 인해 rendering이 무한으로 실행된다.
   // 때문에 앱이 실행될 때, 최초로 한번만 fetch하도록 useEffect를 사용한다.
   useEffect(() => {
-    fetch_list();
-  });
+    fetch_list('list.json',setMenu);
+    fetch_list('PostList.json',setPost);
+  },[menu, post]);
 
   return (
     <div className="App">
@@ -88,6 +160,8 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Gate/>}></Route>
           <Route path="/Home" element={<Home list={menu}/>}></Route>
+          <Route path='/NoticeBoard' element={<NoticeBoardList list={post}/>}></Route>
+          <Route path='/NoticeBoard/:post_id' element={<NoticeBoardPost list={post}/>}></Route>
           <Route path="*" element="Not Found"></Route>
         </Routes>
       </BrowserRouter>
