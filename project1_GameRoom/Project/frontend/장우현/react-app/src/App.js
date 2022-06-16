@@ -53,7 +53,7 @@ function MenuRow(props){
   for(var i=0;i<props.list.length;i++){
     var li = props.list[i];
     listTag.push(
-        <div className="menu" key={li.id}><Link to='/NoticeBoard'>{li.title}</Link></div>
+      <Link to='/NoticeBoard' key={li.id}><div className="menu">{li.title}</div></Link>
     );
   }
   return(
@@ -81,7 +81,7 @@ function NoticeBoardList(props) {
     var li = props.list[i];
     listTag.push(
       <NavLink to={'/NoticeBoard/'+li.id} key={li.id}>
-        <article className='post'>
+        <article className='NoticeBoard_post'>
           <h3>{li.title}</h3>
           {li.main_text}
           <hr ></hr>
@@ -94,6 +94,13 @@ function NoticeBoardList(props) {
       <NoticeBoard/>
       <div className="NoticeBoard_Main">
         {listTag}
+      </div>
+      <div className='NoticeBoard_bottom'>
+        <Link to="/NoticeBoard/edit">
+          <div className='NoticeBoard_edit'>
+            글쓰기
+          </div>
+        </Link>
       </div>
     </div>
   );
@@ -117,14 +124,32 @@ function NoticeBoardPost(props){
     <div>
       <NoticeBoard/>
       <div className="NoticeBoard_Main">
-        <article className='post'>
+        <article className='NoticeBoard_post'>
           <h3>{selected_post.title}</h3>
           <hr ></hr>
           {selected_post.main_text}
         </article>
       </div>
     </div>
+  );
+}
 
+function NoticeBoardEdit() {
+  return(
+    <div>
+      <NoticeBoard/>
+      <div className="NoticeBoard_Main">
+        <div className="NoticeBoard_edit_form">
+              <input type="text" name="username" className="form-control" placeholder="제목" id="NoticeBoard_edit_title"/>
+        </div>
+        <div className="NoticeBoard_edit_form">
+            <textarea className="form-control summernote" id="NoticeBoard_edit_content"></textarea>
+        </div>
+        <div className="NoticeBoard_edit_form">
+            <input type="button" className="form-control summernote" id="NoticeBoard_edit_button" value="작성"></input>
+        </div>
+      </div>
+    </div>
   );
 }
 //==========================================================================================================
@@ -162,6 +187,7 @@ function App() {
           <Route path="/Home" element={<Home list={menu}/>}></Route>
           <Route path='/NoticeBoard' element={<NoticeBoardList list={post}/>}></Route>
           <Route path='/NoticeBoard/:post_id' element={<NoticeBoardPost list={post}/>}></Route>
+          <Route path='/NoticeBoard/edit' element={<NoticeBoardEdit/>}></Route>
           <Route path="*" element="Not Found"></Route>
         </Routes>
       </BrowserRouter>
