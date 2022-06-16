@@ -155,6 +155,40 @@ function NoticeBoardEdit() {
 //==========================================================================================================
 
 //==========================================================================================================
+function Login(){
+  return(
+    <div>
+      <h1 id="Login_Head"><Link to="/Home">GameRoom</Link></h1>
+      <LoginMain/>
+      <LoginBottom/>
+    </div>
+  );
+}
+
+function LoginMain(){
+  return(
+    <div className='Login_Main'>
+      <input className="Login_Main_Content" type="text" placeholder='아이디'/><br/>
+      <input className="Login_Main_Content" type="password" placeholder='비밀번호'/><br/>
+      <div className='Login_Main_Content' id='Login_Main_Content_Checkbox'><label className='Login_Checkbox'><input type="checkbox" id='Login_Checkbox_Id'/>로그인 상태 유지</label></div><br/>
+      <input className="Login_Main_Content" type="button" value="Login"/>
+    </div>
+  );
+}
+
+function LoginBottom(){
+  return(
+    <div className='Login_Bottom'>
+      <a className="Login_Bottom_Content" href='#!'>아이디 찾기</a>
+      <a className="Login_Bottom_Content" href='#!'>비밀번호 찾기</a>
+      <a className="Login_Bottom_Content" href='#!' id='Login_Bottom__Content_SignUp'>회원가입</a>
+    </div>
+  );
+}
+
+//==========================================================================================================
+
+//==========================================================================================================
 function App() {
   const [menu, setMenu] = useState([]);
   const [post,setPost] = useState([]);
@@ -185,6 +219,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Gate/>}></Route>
           <Route path="/Home" element={<Home list={menu}/>}></Route>
+          <Route path="/Login" element={<Login/>}></Route>
           <Route path='/NoticeBoard' element={<NoticeBoardList list={post}/>}></Route>
           <Route path='/NoticeBoard/:post_id' element={<NoticeBoardPost list={post}/>}></Route>
           <Route path='/NoticeBoard/edit' element={<NoticeBoardEdit/>}></Route>
