@@ -1,6 +1,8 @@
 import './App.css';
-import React, {useState, useEffect} from 'react'
-import {Route, NavLink, useParams, Routes, BrowserRouter, Link} from 'react-router-dom'
+import React, {useState, useEffect} from 'react';
+import {Route, NavLink, useParams, Routes, BrowserRouter, Link} from 'react-router-dom';
+import menuList from './json/list.json';
+import postList from './json/PostList.json';
 
 //==========================================================================================================
 function Gate(){
@@ -190,6 +192,7 @@ function LoginBottom(){
 
 //==========================================================================================================
 function App() {
+  /*
   const [menu, setMenu] = useState([]);
   const [post,setPost] = useState([]);
   const fetch_list = (list,setState)=> {
@@ -212,16 +215,17 @@ function App() {
     fetch_list('list.json',setMenu);
     fetch_list('PostList.json',setPost);
   },[menu, post]);
+*/
 
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Gate/>}></Route>
-          <Route path="/Home" element={<Home list={menu}/>}></Route>
+          <Route path="/Home" element={<Home list={menuList}/>}></Route>
           <Route path="/Login" element={<Login/>}></Route>
-          <Route path='/NoticeBoard' element={<NoticeBoardList list={post}/>}></Route>
-          <Route path='/NoticeBoard/:post_id' element={<NoticeBoardPost list={post}/>}></Route>
+          <Route path='/NoticeBoard' element={<NoticeBoardList list={postList}/>}></Route>
+          <Route path='/NoticeBoard/:post_id' element={<NoticeBoardPost list={postList}/>}></Route>
           <Route path='/NoticeBoard/edit' element={<NoticeBoardEdit/>}></Route>
           <Route path="*" element="Not Found"></Route>
         </Routes>
