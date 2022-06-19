@@ -232,11 +232,58 @@ function LoginBottom(){
     <div className='Login_Bottom'>
       <a className="Login_Bottom_Content" href='#!'>아이디 찾기</a>
       <a className="Login_Bottom_Content" href='#!'>비밀번호 찾기</a>
-      <a className="Login_Bottom_Content" href='#!' id='Login_Bottom__Content_SignUp'>회원가입</a>
+      <Link className="Login_Bottom_Content" to='/Login/SignUp' id='Login_Bottom__Content_SignUp'>회원가입</Link>
     </div>
   );
 }
 
+function SignUp(){
+  let signUpInfoDemo = {username: "gildong",password: "1234",email: "gildong@naver.com",memberName: "홍길동"}
+  let [signUpInfo, setSignUpInfo] = useState(signUpInfoDemo);
+  let [state, setState] = useState({state:0,data:0});
+
+  return(
+    <div>
+      아이디<input type="text" onChange={(event)=>{
+        let CopysignUpInfo = {...signUpInfo, username:event.target.value}
+        setSignUpInfo(CopysignUpInfo);
+      }}></input>
+      비번<input type="text" onChange={(event)=>{
+        let CopysignUpInfo = {...signUpInfo, password:event.target.value}
+        setSignUpInfo(CopysignUpInfo);
+      }}></input>
+      이메일<input type="text" onChange={(event)=>{
+        let CopysignUpInfo = {...signUpInfo, email:event.target.value}
+        setSignUpInfo(CopysignUpInfo);
+      }}></input>
+      이름<input type="text" onChange={(event)=>{
+        let CopysignUpInfo = {...signUpInfo, memberName:event.target.value}
+        setSignUpInfo(CopysignUpInfo);
+      }}></input>
+      <input type="button" onClick={()=>{
+        console.log(signUpInfo);
+        fetch('/auth/joinProc',{
+          method: 'post',
+          headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+           },
+           body: JSON.stringify(signUpInfo)
+          })
+      .then(function(result){
+        return result.json();
+      })
+      .then(function(json){
+        setState(json);
+        console.log(state);
+        console.log(json);
+      })
+      console.log(state);
+      }
+      }></input>
+    </div>
+  );
+}
 //==========================================================================================================
 
 //==========================================================================================================
@@ -273,6 +320,7 @@ function App() {
           <Route exact path="/" element={<Gate/>}></Route>
           <Route path="/Home" element={<Home list={menuList}/>}></Route>
           <Route path="/Login" element={<Login/>}></Route>
+          <Route path="/Login/SignUp" element={<SignUp/>}></Route>
           <Route path='/NoticeBoard' element={<NoticeBoardList list={postList}/>}></Route>
           <Route path='/NoticeBoard/:post_id' element={<NoticeBoardPost PostList={postList} Replylist={replyList}/>}></Route>
           <Route path='/NoticeBoard/edit' element={<NoticeBoardEdit/>}></Route>
