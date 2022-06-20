@@ -3,8 +3,8 @@ a {
   color: inherit;
 }
 .login_row {
-  float: right;
-  position: relative;
+  float: right; 
+  position: absolute;
   right: 30px;
 }
 .login {
@@ -14,6 +14,33 @@ a {
   position: relative;
   bottom: 6px;
 }
+.Login_menu_nav {
+  display: inline;
+}
+.Login_menu_nav ul{
+  width: 140px;
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+  display: inline-block;
+
+}
+.Login_menu_nav li{
+  text-align: center;
+  color: #e06989;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  vertical-align: middle;
+  border: 1px solid #ffe3eb;
+  background-color: #ffe3eb;
+  border-radius: 10px;
+  float: left;
+}
+.Login_menu_link {
+  display: block;
+}
+
 h1 {
   font-size: 65px;
   text-align: center;
@@ -66,6 +93,11 @@ h1 {
   position: relative;
   top: 50px;
 }
+
+
+
+
+
 .NoticeBoard_head {
   font-size: 40px;
   text-align: center;
@@ -100,6 +132,64 @@ h1 {
 }
 .NoticeBoard_post:hover {
   background-color: #ffe3eb;
+}
+#NoticeBoard_post_menu1 {
+  float: left;
+}
+#NoticeBoard_post_menu1_button {
+  margin-right: 10px;
+}
+#NoticeBoard_post_menu2 {
+  float: right;
+}
+.NoticeBoard_post_menu2_content {
+  padding: 5px;
+  border-right: 1px solid gray;
+}
+#NoticeBoard_post_menu2_content_correction {
+  border: none;
+}
+.NoticeBoard_post_reply_head {
+  font-weight: 900;
+}
+.NoticeBoard_post_reply_content_ul {
+  padding: 0px;
+  list-style: none;
+}
+.NoticeBoard_post_reply_content_li {
+  padding-bottom: 15px;
+  margin: 3px;
+}
+.NoticeBoard_post_replySubmit {
+  margin-top: 70px;
+}
+#NoticeBoard_post_replySubmit_textarea {
+  width: 100%;
+  height: 80px;
+  margin-top: 10px;
+}
+#NoticeBoard_post_replySubmit_button {
+  width: 90px;
+  height: 35px;
+  float: right;
+}
+.NoticeBoard_sideList{
+  border: 1px solid #ffe3eb;
+  background-color: #ffe3eb;
+  border-radius: 20px;
+  width: 200px;
+  text-align: center;
+  position: fixed;
+  right: 5%;
+  top: 20%;
+}
+.NoticeBoard_sideList_ul {
+  padding: 0px;
+}
+.NoticeBoard_sideList_li {
+  list-style: none;
+  margin: 10px;
+  padding-bottom: 10px;
 }
 .NoticeBoard_edit {
   border:1px solid #ffe3eb;
@@ -142,5 +232,75 @@ h1 {
   float: right;
   width: 80px;
   height: 40px;
+}
+
+
+
+
+
+
+
+.Login_Head {
+  top:10px;
+}
+.Login_Main {
+  margin: 20px;
+  text-align: center;
+  position: relative;
+  top: 30px;
+}
+.Login_Main_Content {
+  width: 30%;
+  height: 50px;
+  margin:20px; 
+  display: inline-block;
+}
+#Login_Main_Content_Checkbox {
+  margin: 0px;
+}
+.Login_Checkbox {
+  font-size: 20px;
+  float: left;
+  display: block;
+}
+#Login_Checkbox_Id {
+  width: 20px;
+  height: 20px;
+  margin: 10px;
+}
+.Login_Bottom{
+  margin: 20px;
+  text-align: center;
+  position: relative;
+  top: 50px;
+}
+.Login_Bottom_Content {
+  font-size: 20px;
+  padding: 10px;
+  border-right: 2px solid gray;
+  display: inline-block;
+}
+#Login_Bottom__Content_SignUp {
+  border-right: none;
+}
+.Sign_Main {
+  margin: 20px;
+  text-align: center;
+  position: relative;
+  top: 30px;
+}
+
+.SignUp_Content label{
+  width: 30%;
+  margin-right: 100px;
+  display: inline-block;
+}
+
+.SignUp_Content input{
+  width: 30%;
+  height: 50px;
+  margin:20px; 
+
+  display: inline-block;
 }
 

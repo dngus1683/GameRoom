@@ -1,7 +1,11 @@
 import './App.css';
-import React, {useState, useEffect} from 'react'
-import {Route, NavLink, useParams, Routes, BrowserRouter, Link} from 'react-router-dom'
+import React, {useState, useEffect} from 'react';
+import {Route, NavLink, useParams, Routes, BrowserRouter, Link} from 'react-router-dom';
+import menuList from './json/list.json';
+import postList from './json/PostList.json';
+import replyList from './json/reply.json';
 
+let LoginMenuFlag = 0;
 //==========================================================================================================
 function Gate(){
   return(
@@ -18,6 +22,7 @@ function Gate(){
 
 //==========================================================================================================
 function Home(props){
+  LoginMenuFlag = 0;
   return(
     <div>
       <LoginRow/>
@@ -30,16 +35,24 @@ function Home(props){
 function LoginRow(){
   return(
     <div className="login_row">
-      <div className="login">
-        <NavLink to="/Login"><img src={require('./Img/icon_Login.png')} alt="Login"/></NavLink>
-      </div>
-      <div className="login">
-        <NavLink to="/Login" className="login_a">로그인</NavLink>
-      </div>
+      {LoginMenuFlag ? <LoginMenuNav/> : null }
+      <span className="login"><NavLink to="/Login"><img src={require('./Img/icon_Login.png')} alt="Login"/></NavLink></span>
+      <span className="login"><NavLink to="/Login" className="login_a">로그인</NavLink></span>
     </div>
   );
 }
-
+function LoginMenuNav(){
+  return(
+    <nav className='Login_menu_nav'>
+      <ul>
+        <li><Link className='Login_menu_link' to="/NoticeBoard">게</Link></li>
+        <li><Link className='Login_menu_link' to="/NoticeBoard">방</Link></li>
+        <li><Link className='Login_menu_link' to="/NoticeBoard">비</Link></li>
+        <li><Link className='Login_menu_link' to="/NoticeBoard">미</Link></li>
+      </ul>
+    </nav>
+  )
+}
 function Head(){
   return(
     <div>
@@ -67,11 +80,12 @@ function MenuRow(props){
 
 //==========================================================================================================
 function NoticeBoard(){
+  LoginMenuFlag = 1;
   return(
-    <div>
+    <header>
       <LoginRow/>
       <h2 className='NoticeBoard_head'><Link to="/Home">GameRoom</Link></h2>
-    </div>
+    </header>
   );
 }
 
@@ -83,8 +97,7 @@ function NoticeBoardList(props) {
       <NavLink to={'/NoticeBoard/'+li.id} key={li.id}>
         <article className='NoticeBoard_post'>
           <h3>{li.title}</h3>
-          {li.main_text}
-          <hr ></hr>
+          {li.main_text}<hr/>
         </article>
       </NavLink>
     );
@@ -107,29 +120,67 @@ function NoticeBoardList(props) {
 }
 
 function NoticeBoardPost(props){
+  var listTag = [];
+  var PostListTag = [];
   var params = useParams();
   var post_id = params.post_id;
   var selected_post = {
     title:'Sorry',
     main_text:'Not Found'
   }
-  for(var i=0; i<props.list.length; i++){
-    var li = props.list[i];
+  for(var i=0; i<props.PostList.length; i++){
+    var li = props.PostList[i];
+    PostListTag.push(
+      <li className='NoticeBoard_sideList_li' key={li.id}><Link to={'/NoticeBoard/'+li.id}>{li.title}</Link></li>
+    );
     if(li.id === Number(post_id)){
       selected_post = li;
-      break;
     }
+  }
+  for(var i=0; i<props.Replylist.length; i++){
+    var li = props.Replylist[i];
+    listTag.push(
+      <li className='NoticeBoard_post_reply_content_li' key={li.id}>
+        <div className='NoticeBoard_post_reply_head'>{li.username}</div>
+        <div>{li.content}</div>
+      </li>
+    );
   }
   return(
     <div>
       <NoticeBoard/>
-      <div className="NoticeBoard_Main">
+      <section className="NoticeBoard_Main">
         <article className='NoticeBoard_post'>
-          <h3>{selected_post.title}</h3>
-          <hr ></hr>
+          <h3>{selected_post.title}</h3><hr/>
           {selected_post.main_text}
         </article>
-      </div>
+        <div className='NoticeBoard_post'>
+          <span id='NoticeBoard_post_menu1'>
+            <input type="button" id='NoticeBoard_post_menu1_button' value="좋아요"/>
+            <Link to="/NoticeBoard">목록</Link>
+          </span>
+          <span id='NoticeBoard_post_menu2'>
+            <Link className='NoticeBoard_post_menu2_content' to="/NoticeBoard">삭제하기</Link>
+            <Link className='NoticeBoard_post_menu2_content' to="/NoticeBoard" id='NoticeBoard_post_menu2_content_correction'>수정하기</Link>
+          </span>
+        </div>
+        <div className='NoticeBoard_post'>
+          <h4 className='NoticeBoard_post_reply_head'>댓글</h4><hr/>
+          <ul className='NoticeBoard_post_reply_content_ul'>
+            {listTag}
+          </ul><hr/>
+          <div className='NoticeBoard_post_replySubmit'>
+            <div>작성자 아이디</div>
+            <textarea id='NoticeBoard_post_replySubmit_textarea'></textarea>
+            <input id='NoticeBoard_post_replySubmit_button' type="button" value="등록"/>
+          </div>
+        </div>
+      </section>
+      <aside className='NoticeBoard_sideList'>
+        <ul className='NoticeBoard_sideList_ul'>
+          {PostListTag}
+        </ul>
+      </aside>
     </div>
   );
 }
@@ -155,7 +206,110 @@ function NoticeBoardEdit() {
 //==========================================================================================================
 
 //==========================================================================================================
+function Login(){
+  return(
+    <div>
+      <LoginHead/>
+      <LoginMain/>
+      <LoginBottom/>
+    </div>
+  );
+}
+
+function LoginHead(){
+  return(
+    <h1 className="Login_Head"><Link to="/Home">GameRoom</Link></h1>
+  );
+}
+
+function LoginMain(){
+  return(
+    <div className='Login_Main'>
+      <input className="Login_Main_Content" type="text" placeholder='아이디'/><br/>
+      <input className="Login_Main_Content" type="password" placeholder='비밀번호'/><br/>
+      <div className='Login_Main_Content' id='Login_Main_Content_Checkbox'><label className='Login_Checkbox'><input type="checkbox" id='Login_Checkbox_Id'/>로그인 상태 유지</label></div><br/>
+      <input className="Login_Main_Content" type="button" value="Login"/>
+    </div>
+  );
+}
+
+function LoginBottom(){
+  return(
+    <div className='Login_Bottom'>
+      <a className="Login_Bottom_Content" href='#!'>아이디 찾기</a>
+      <a className="Login_Bottom_Content" href='#!'>비밀번호 찾기</a>
+      <Link className="Login_Bottom_Content" to='/Login/SignUp' id='Login_Bottom__Content_SignUp'>회원가입</Link>
+    </div>
+  );
+}
+
+function SignUp(){
+  let signUpInfoDemo = {username: "gildong",password: "1234",email: "gildong@naver.com",memberName: "홍길동"}
+  let [signUpInfo, setSignUpInfo] = useState(signUpInfoDemo);
+  let [state, setState] = useState({state:0,data:0});
+
+  return(
+    <div>
+      <LoginHead/>
+      <div className='Sign_Main'>
+        <div className='SignUp_Content'>
+          <label for='SignUp_Content_id'>아이디</label>
+          <input type="text" id='SignUp_Content_id'onChange={(event)=>{
+            let CopysignUpInfo = {...signUpInfo, username:event.target.value}
+            setSignUpInfo(CopysignUpInfo);
+          }}></input>
+        </div>
+        <div className='SignUp_Content'>
+          <label for='SignUp_Content_password'>비번</label>
+          <input type="password" id='SignUp_Content_password' onChange={(event)=>{
+            let CopysignUpInfo = {...signUpInfo, password:event.target.value}
+            setSignUpInfo(CopysignUpInfo);
+          }}></input>
+        </div>
+        <div className='SignUp_Content'>
+          <label for='SignUp_Content_email'>이메일</label>
+          <input type="email" id='SignUp_Content_email' onChange={(event)=>{
+            let CopysignUpInfo = {...signUpInfo, email:event.target.value}
+            setSignUpInfo(CopysignUpInfo);
+          }}></input>
+        </div>
+        <div className='SignUp_Content'>
+          <label for='SignUp_Content_memberName'>이름</label>
+          <input type="text" id='SignUp_Content_memberName' onChange={(event)=>{
+            let CopysignUpInfo = {...signUpInfo, memberName:event.target.value}
+            setSignUpInfo(CopysignUpInfo);
+          }}></input>
+        </div>
+        <input type="button"  value='가입' onClick={()=>{
+          console.log(signUpInfo);
+          fetch('/auth/joinProc',{
+            method: 'post',
+            headers : { 
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(signUpInfo)
+            })
+        .then(function(result){
+          return result.json();
+        })
+        .then(function(json){
+          setState(json);
+          console.log(state);
+          console.log(json);
+        })
+        console.log(state);
+        }
+        }></input>
+      </div>
+    </div>
+  );
+}
+//==========================================================================================================
+
+//==========================================================================================================
 function App() {
+  /*
   const [menu, setMenu] = useState([]);
   const [post,setPost] = useState([]);
   const fetch_list = (list,setState)=> {
@@ -178,15 +332,18 @@ function App() {
     fetch_list('list.json',setMenu);
     fetch_list('PostList.json',setPost);
   },[menu, post]);
+*/
 
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Gate/>}></Route>
-          <Route path="/Home" element={<Home list={menu}/>}></Route>
-          <Route path='/NoticeBoard' element={<NoticeBoardList list={post}/>}></Route>
-          <Route path='/NoticeBoard/:post_id' element={<NoticeBoardPost list={post}/>}></Route>
+          <Route path="/Home" element={<Home list={menuList}/>}></Route>
+          <Route path="/Login" element={<Login/>}></Route>
+          <Route path="/Login/SignUp" element={<SignUp/>}></Route>
+          <Route path='/NoticeBoard' element={<NoticeBoardList list={postList}/>}></Route>
+          <Route path='/NoticeBoard/:post_id' element={<NoticeBoardPost PostList={postList} Replylist={replyList}/>}></Route>
           <Route path='/NoticeBoard/edit' element={<NoticeBoardEdit/>}></Route>
           <Route path="*" element="Not Found"></Route>
         </Routes>
