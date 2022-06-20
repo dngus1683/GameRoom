@@ -21,11 +21,7 @@ public class PrincipalDetailService implements UserDetailsService{
 	//이걸 override를 해줘야 우리가 만든 User값을 사용할 수 있다. 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User principal = userRepository.findByUsername(username)
-				.orElseThrow(()->{
-					return new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.: " + username);
-				});
-		System.out.println("해당 사용자 찾아서 로그인");
+		User principal = userRepository.findByUsername(username);
 		return new PrincipalDetail(principal);	// 시큐리티의 세션에 유저 정보가 저장이 됨. UserDetails 타입
 	}
 }
