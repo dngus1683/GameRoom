@@ -13,7 +13,11 @@ import com.cos.blog.model.User;
 //@Repository 생략 가능
 public interface UserRepository extends JpaRepository<User, Integer>{	//User테이블을 관리하는 repo, PK는 Integer
 		// SELECT * FROM user WHERE username = 1?;
-		Optional<User> findByUsername(String username);
+		User findByUsername(String username);
+		
+		Optional<User> findByUsernameAndEmailAndMemberName(String username, String email, String memberName);
+		
+		Optional<User> findByEmailAndMemberName(String email, String memberName);
 	
 }
 

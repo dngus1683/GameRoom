@@ -42,6 +42,9 @@ public class User {
 	@Column(nullable = false, length = 50)	//null값이 될 수 없고, 길이 50이하.
 	private String email;	//이메일
 	
+	@Column(nullable = false, length = 20)
+	private String memberName;				//null값이 될 수 없고, 길이 20이하.
+	
 	
 	@ColumnDefault(" 'user' ")	//ColumnDefault 에는 '''이 들어가야 한다. column의 default값을 지정.
 	//DB는 RoleType이라는 게 없다.
