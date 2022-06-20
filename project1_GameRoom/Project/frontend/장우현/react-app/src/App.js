@@ -209,10 +209,16 @@ function NoticeBoardEdit() {
 function Login(){
   return(
     <div>
-      <h1 id="Login_Head"><Link to="/Home">GameRoom</Link></h1>
+      <LoginHead/>
       <LoginMain/>
       <LoginBottom/>
     </div>
+  );
+}
+
+function LoginHead(){
+  return(
+    <h1 className="Login_Head"><Link to="/Home">GameRoom</Link></h1>
   );
 }
 
@@ -244,43 +250,58 @@ function SignUp(){
 
   return(
     <div>
-      아이디<input type="text" onChange={(event)=>{
-        let CopysignUpInfo = {...signUpInfo, username:event.target.value}
-        setSignUpInfo(CopysignUpInfo);
-      }}></input>
-      비번<input type="text" onChange={(event)=>{
-        let CopysignUpInfo = {...signUpInfo, password:event.target.value}
-        setSignUpInfo(CopysignUpInfo);
-      }}></input>
-      이메일<input type="text" onChange={(event)=>{
-        let CopysignUpInfo = {...signUpInfo, email:event.target.value}
-        setSignUpInfo(CopysignUpInfo);
-      }}></input>
-      이름<input type="text" onChange={(event)=>{
-        let CopysignUpInfo = {...signUpInfo, memberName:event.target.value}
-        setSignUpInfo(CopysignUpInfo);
-      }}></input>
-      <input type="button" onClick={()=>{
-        console.log(signUpInfo);
-        fetch('/auth/joinProc',{
-          method: 'post',
-          headers : { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-           },
-           body: JSON.stringify(signUpInfo)
-          })
-      .then(function(result){
-        return result.json();
-      })
-      .then(function(json){
-        setState(json);
+      <LoginHead/>
+      <div className='Sign_Main'>
+        <div className='SignUp_Content'>
+          <label for='SignUp_Content_id'>아이디</label>
+          <input type="text" id='SignUp_Content_id'onChange={(event)=>{
+            let CopysignUpInfo = {...signUpInfo, username:event.target.value}
+            setSignUpInfo(CopysignUpInfo);
+          }}></input>
+        </div>
+        <div className='SignUp_Content'>
+          <label for='SignUp_Content_password'>비번</label>
+          <input type="password" id='SignUp_Content_password' onChange={(event)=>{
+            let CopysignUpInfo = {...signUpInfo, password:event.target.value}
+            setSignUpInfo(CopysignUpInfo);
+          }}></input>
+        </div>
+        <div className='SignUp_Content'>
+          <label for='SignUp_Content_email'>이메일</label>
+          <input type="email" id='SignUp_Content_email' onChange={(event)=>{
+            let CopysignUpInfo = {...signUpInfo, email:event.target.value}
+            setSignUpInfo(CopysignUpInfo);
+          }}></input>
+        </div>
+        <div className='SignUp_Content'>
+          <label for='SignUp_Content_memberName'>이름</label>
+          <input type="text" id='SignUp_Content_memberName' onChange={(event)=>{
+            let CopysignUpInfo = {...signUpInfo, memberName:event.target.value}
+            setSignUpInfo(CopysignUpInfo);
+          }}></input>
+        </div>
+        <input type="button"  value='가입' onClick={()=>{
+          console.log(signUpInfo);
+          fetch('/auth/joinProc',{
+            method: 'post',
+            headers : { 
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(signUpInfo)
+            })
+        .then(function(result){
+          return result.json();
+        })
+        .then(function(json){
+          setState(json);
+          console.log(state);
+          console.log(json);
+        })
         console.log(state);
-        console.log(json);
-      })
-      console.log(state);
-      }
-      }></input>
+        }
+        }></input>
+      </div>
     </div>
   );
 }

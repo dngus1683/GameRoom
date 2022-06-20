@@ -240,7 +240,7 @@ h1 {
 
 
 
-#Login_Head {
+.Login_Head {
   top:10px;
 }
 .Login_Main {
@@ -283,5 +283,24 @@ h1 {
 #Login_Bottom__Content_SignUp {
   border-right: none;
 }
+.Sign_Main {
+  margin: 20px;
+  text-align: center;
+  position: relative;
+  top: 30px;
+}
 
+.SignUp_Content label{
+  width: 30%;
+  margin-right: 100px;
+  display: inline-block;
+}
+
+.SignUp_Content input{
+  width: 30%;
+  height: 50px;
+  margin:20px; 
+
+  display: inline-block;
+}
 
