@@ -3,6 +3,7 @@ package com.cos.blog.controller.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,11 +27,15 @@ public class VisitorsApiController {
 		return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
 	}
 	
-	@PutMapping("/api/visitors/{id}")
+	@DeleteMapping("/api/visitors/{id}")
 	public ResponseDto<Integer> vDeleteById(@PathVariable int id, @AuthenticationPrincipal PrincipalDetail principal){
 		visitorsService.글삭제하기(id,principal);
 		return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
 	}
 	
-	
+	@PutMapping("/api/visitors/{id}")
+	public ResponseDto<Integer> vUpdate(@PathVariable int id, @RequestBody Visitors visitors){
+		visitorsService.글수정하기(id,visitors);
+		return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
+	}
 }

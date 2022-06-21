@@ -8,9 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cos.blog.dto.VisitorsPageResponseDto;
+import com.cos.blog.dto.VisitorsUpResponseDto;
 import com.cos.blog.model.Visitors;
 import com.cos.blog.service.VisitorsService;
 
@@ -30,4 +32,6 @@ public class VisitorsController {
 		visitorsPageResponseDto.setPage(page);
 		return visitorsPageResponseDto;	
 	}
+	
+	
 }
