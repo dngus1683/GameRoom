@@ -283,24 +283,24 @@ h1 {
 #Login_Bottom__Content_SignUp {
   border-right: none;
 }
-.Sign_Main {
-  margin: 20px;
-  text-align: center;
-  position: relative;
-  top: 30px;
-}
 
-.SignUp_Content label{
+.Login_Sup_Content {
   width: 30%;
-  margin-right: 100px;
-  display: inline-block;
+  margin:0 auto;
 }
-
-.SignUp_Content input{
-  width: 30%;
-  height: 50px;
+.Login_Sup_Content label{
+  text-align: left;
+  font-weight: 700;
   margin:20px; 
+  display: block;
+}
 
-  display: inline-block;
+.Login_Sup_Content input{
+  width: 100%;
+  height: 50px;
+  margin-top: 20px;
+  margin-bottom:20px;
+
+  display: block;
 }
 

@@ -4,8 +4,10 @@ import {Route, NavLink, useParams, Routes, BrowserRouter, Link} from 'react-rout
 import menuList from './json/list.json';
 import postList from './json/PostList.json';
 import replyList from './json/reply.json';
+import SignUpList from './json/SignUpList.json';
 
 let LoginMenuFlag = 0;
+let LoginSupMenuFlag = 0;
 //==========================================================================================================
 function Gate(){
   return(
@@ -236,73 +238,96 @@ function LoginMain(){
 function LoginBottom(){
   return(
     <div className='Login_Bottom'>
-      <a className="Login_Bottom_Content" href='#!'>아이디 찾기</a>
+      <Link className="Login_Bottom_Content" to='/Login/FindId'>아이디 찾기</Link>
       <a className="Login_Bottom_Content" href='#!'>비밀번호 찾기</a>
       <Link className="Login_Bottom_Content" to='/Login/SignUp' id='Login_Bottom__Content_SignUp'>회원가입</Link>
     </div>
   );
 }
 
-function SignUp(){
-  let signUpInfoDemo = {username: "gildong",password: "1234",email: "gildong@naver.com",memberName: "홍길동"}
-  let [signUpInfo, setSignUpInfo] = useState(signUpInfoDemo);
-  let [state, setState] = useState({state:0,data:0});
-
+function FindId(){
+  LoginSupMenuFlag = 0;
   return(
     <div>
       <LoginHead/>
-      <div className='Sign_Main'>
-        <div className='SignUp_Content'>
-          <label for='SignUp_Content_id'>아이디</label>
-          <input type="text" id='SignUp_Content_id'onChange={(event)=>{
-            let CopysignUpInfo = {...signUpInfo, username:event.target.value}
-            setSignUpInfo(CopysignUpInfo);
-          }}></input>
+      <div className='Login_Main'>
+        <LoginSupMain/>
+        <div className='Login_Sup_Content'>
+          <input type="button"  value='조회'></input>
         </div>
-        <div className='SignUp_Content'>
-          <label for='SignUp_Content_password'>비번</label>
-          <input type="password" id='SignUp_Content_password' onChange={(event)=>{
-            let CopysignUpInfo = {...signUpInfo, password:event.target.value}
-            setSignUpInfo(CopysignUpInfo);
-          }}></input>
-        </div>
-        <div className='SignUp_Content'>
-          <label for='SignUp_Content_email'>이메일</label>
-          <input type="email" id='SignUp_Content_email' onChange={(event)=>{
-            let CopysignUpInfo = {...signUpInfo, email:event.target.value}
-            setSignUpInfo(CopysignUpInfo);
-          }}></input>
-        </div>
-        <div className='SignUp_Content'>
-          <label for='SignUp_Content_memberName'>이름</label>
-          <input type="text" id='SignUp_Content_memberName' onChange={(event)=>{
-            let CopysignUpInfo = {...signUpInfo, memberName:event.target.value}
-            setSignUpInfo(CopysignUpInfo);
-          }}></input>
-        </div>
-        <input type="button"  value='가입' onClick={()=>{
-          console.log(signUpInfo);
-          fetch('/auth/joinProc',{
-            method: 'post',
-            headers : { 
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            },
-            body: JSON.stringify(signUpInfo)
-            })
-        .then(function(result){
-          return result.json();
-        })
-        .then(function(json){
-          setState(json);
-          console.log(state);
-          console.log(json);
-        })
-        console.log(state);
-        }
-        }></input>
       </div>
     </div>
+  );
+}
+function SignUp(){
+  LoginSupMenuFlag = 2;
+  let [state, setState] = useState({state:0,data:0});
+ 
+  return(
+    <div>
+      <LoginHead/>
+      <div className='Login_Main'>
+        <LoginSupMain/>
+        <div className='Login_Sup_Content'>
+          <input type="button"  value='가입' onClick={()=>{
+            fetch('/auth/joinProc',{
+              method: 'post',
+              headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              body: JSON.stringify(signUpInfo)
+              })
+          .then(function(result){
+            return result.json();
+          })
+          .then(function(json){
+            setState(json);
+            console.log(state);
+            console.log(json);
+          })
+          }
+          }></input>
+        </div>
+      </div>
+    </div>
+  );
+}
+function LoginSupMain(){
+  let [signUpInfo, setSignUpInfo] = useState({});
+  var pwFlag = 0;
+  var listTag = [];
+  var LoginSupList = SignUpList;
+  const ChangeList = (targetIdx)=>{
+    var targetContent = LoginSupList.splice(targetIdx,1);
+    LoginSupList.splice(LoginSupList.length-1,0,targetContent);
+  }
+
+  for(var i=0; i<LoginSupList.length; i++){
+    var li = LoginSupList[i];
+    if(LoginSupMenuFlag === 0){
+      if(li.title === "아이디" || li.title === "비밀번호") continue;
+    }
+    else if(LoginSupMenuFlag === 1 && pwFlag === 0){
+      if(li.title === "비밀번호"){
+        ChangeList(i);
+        i = i-1;
+        pwFlag = 1;
+        continue;
+      }
+    }
+    listTag.push(
+      <div className='Login_Sup_Content' key={li.id}>
+        <label htmlFor={li.tagId}>{li.title}</label>
+        <input type={li.type} id={li.tagId} onChange={(event)=>{
+          let CopysignUpInfo = {...signUpInfo, [li.type]:event.target.value}
+          setSignUpInfo(CopysignUpInfo);
+        }}></input>
+      </div>
+    );
+  }
+  return(
+      {listTag}
   );
 }
 //==========================================================================================================
@@ -341,6 +366,7 @@ function App() {
           <Route exact path="/" element={<Gate/>}></Route>
           <Route path="/Home" element={<Home list={menuList}/>}></Route>
           <Route path="/Login" element={<Login/>}></Route>
+          <Route path="/Login/FindId" element={<FindId/>}></Route>
           <Route path="/Login/SignUp" element={<SignUp/>}></Route>
           <Route path='/NoticeBoard' element={<NoticeBoardList list={postList}/>}></Route>
           <Route path='/NoticeBoard/:post_id' element={<NoticeBoardPost PostList={postList} Replylist={replyList}/>}></Route>
