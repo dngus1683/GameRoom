@@ -2,8 +2,6 @@ import './App.css';
 import React, {useState, useEffect} from 'react';
 import {Route, NavLink, useParams, Routes, BrowserRouter, Link} from 'react-router-dom';
 import menuList from './json/list.json';
-import postList from './json/PostList.json';
-import replyList from './json/reply.json';
 import LoginSupList from './json/LoginSupList.json';
 
 let LoginMenuFlag = 0;
@@ -90,19 +88,34 @@ function NoticeBoard(){
   );
 }
 
-function NoticeBoardList(props) {
-  var listTag = [];
-  for(var i=0; i<props.list.length; i++){
-    var li = props.list[i];
-    listTag.push(
-      <NavLink to={'/NoticeBoard/'+li.id} key={li.id}>
-        <article className='NoticeBoard_post'>
-          <h3>{li.title}</h3>
-          {li.main_text}<hr/>
-        </article>
-      </NavLink>
+function NoticeBoardList() {
+  let [list, setList] = useState([]);
+  useEffect(() => {
+    fetch('/board',{
+      method: 'get',
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': localStorage.getItem("access_token")
+      }
+      })
+  .then(function(result){
+    return result.json();
+  })
+  .then(function(data){
+    setList(data.page.content);
+  })
+  },[]);
+  const listTag = list.map((li)=>{
+    return(
+    <NavLink to={'/NoticeBoard/'+li.id} key={li.id}>
+      <article className='NoticeBoard_post'>
+        <h3>{li.title}</h3>
+        {li.content}<hr/>
+      </article>
+    </NavLink>
     );
-  }
+  });
   return(
     <div>
       <NoticeBoard/>
@@ -120,17 +133,38 @@ function NoticeBoardList(props) {
   );
 }
 
-function NoticeBoardPost(props){
-  var listTag = [];
+function NoticeBoardPost(){
+  let [list, setList] = useState([]);
+  let [replyList, setReplyList] = useState[[]];
   var PostListTag = [];
   var params = useParams();
   var post_id = params.post_id;
   var selected_post = {
     title:'Sorry',
-    main_text:'Not Found'
+    content:'Not Found'
   }
-  for(var i=0; i<props.PostList.length; i++){
-    var li = props.PostList[i];
+
+  useEffect(() => {
+    fetch('/board',{
+      method: 'get',
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': localStorage.getItem("access_token")
+      }
+      })
+  .then(function(result){
+    return result.json();
+  })
+  .then(function(data){
+    setList(data.page.content);
+    setReplyList(data.page.content.replys);
+  })
+  },[]);
+  console.log(list);
+
+  for(var i=0; i<list.length; i++){
+    var li = list[i];
     PostListTag.push(
       <li className='NoticeBoard_sideList_li' key={li.id}><Link to={'/NoticeBoard/'+li.id}>{li.title}</Link></li>
     );
@@ -138,22 +172,21 @@ function NoticeBoardPost(props){
       selected_post = li;
     }
   }
-  for(var i=0; i<props.Replylist.length; i++){
-    var li = props.Replylist[i];
-    listTag.push(
+  const listTag = replyList.map((li)=>{
+    return(
       <li className='NoticeBoard_post_reply_content_li' key={li.id}>
         <div className='NoticeBoard_post_reply_head'>{li.username}</div>
         <div>{li.content}</div>
-      </li>
+      </li> 
     );
-  }
+  })
   return(
     <div>
       <NoticeBoard/>
       <section className="NoticeBoard_Main">
         <article className='NoticeBoard_post'>
           <h3>{selected_post.title}</h3><hr/>
-          {selected_post.main_text}
+          {selected_post.content}
         </article>
         <div className='NoticeBoard_post'>
           <span id='NoticeBoard_post_menu1'>
@@ -248,11 +281,11 @@ function LoginMain(){
           body: JSON.stringify(loginInfo)
           })
       .then(function(result){
-        console.log(result);
-        return result.json();
+        return result;
       })
-      .then(function(json){
-        console.log(json);
+      .then(function(data){
+        let jwtToken = data.headers.get("Authorization");
+        localStorage.setItem("access_token", jwtToken);
       })
       }}/>
     </div>
@@ -299,7 +332,6 @@ function FindId(){
 }
 function ChangePw(){
   let [changePwInfo, setChangePwInfo] = useState({});
-  let [state, setState] = useState({state:0,data:0});
   var CopyList = [...LoginSupList];
   const CopyListTarget = CopyList.splice(1,1);
   CopyList.splice(CopyList.length,0,CopyListTarget[0]);
@@ -332,7 +364,7 @@ function ChangePw(){
               body: JSON.stringify(changePwInfo)
               })
           .then(function(result){
-            console.log(result.token);
+            console.log(result);
             return result.json();
           })
           .then(function(json){
@@ -347,7 +379,6 @@ function ChangePw(){
 }
 function SignUp(){
   const [signUpInfo, setSignUpInfo] = useState({});
-  let [state, setState] = useState({state:0,data:0});
   const listTag = LoginSupList.map((li)=>{
     return(
     <div className='Login_Sup_Content' key={li.id}>
@@ -427,8 +458,8 @@ function App() {
           <Route path="/Login/FindId" element={<FindId/>}></Route>
           <Route path="/Login/ChangePw" element={<ChangePw/>}></Route>
           <Route path="/Login/SignUp" element={<SignUp/>}></Route>
-          <Route path='/NoticeBoard' element={<NoticeBoardList list={postList}/>}></Route>
-          <Route path='/NoticeBoard/:post_id' element={<NoticeBoardPost PostList={postList} Replylist={replyList}/>}></Route>
+          <Route path='/NoticeBoard' element={<NoticeBoardList/>}></Route>
+          <Route path='/NoticeBoard/:post_id' element={<NoticeBoardPost/>}></Route>
           <Route path='/NoticeBoard/edit' element={<NoticeBoardEdit/>}></Route>
           <Route path="*" element="Not Found"></Route>
         </Routes>
