@@ -271,11 +271,11 @@ function LoginBottom(){
 
 function FindId(){
   let [findIdInfo, setFindIdInfo] = useState({});
-  var listTag = [];
-  for(var i=0; i<LoginSupList.length; i++){
-    var li = LoginSupList[i];
-    if(li.title === "아이디" || li.title === "비밀번호") continue;
-    listTag.push(
+  var CopyList = [...LoginSupList];
+  CopyList.splice(0,2);
+
+  const listTag = CopyList.map((li)=>{
+    return(
       <div className='Login_Sup_Content' key={li.id}>
         <label htmlFor={li.tagId}>{li.title}</label>
         <input type={li.type} id={li.tagId} onChange={(event)=>{
@@ -283,12 +283,12 @@ function FindId(){
           setFindIdInfo(CopysFindIdInfo);
         }}></input>
       </div>
-    );
-  }
+    )
+  });
   return(
     <div>
       <LoginHead/>
-      <div className='Sign_Main'>
+      <div className='Login_Main'>
         {listTag}
         <div className='Login_Sup_Content'>
           <input type="button"  value='조회'></input>
@@ -300,10 +300,12 @@ function FindId(){
 function ChangePw(){
   let [changePwInfo, setChangePwInfo] = useState({});
   let [state, setState] = useState({state:0,data:0});
-  var listTag = [];
-  for(var i=0; i<LoginSupList.length; i++){
-    var li = LoginSupList[i];
-    listTag.push(
+  var CopyList = [...LoginSupList];
+  const CopyListTarget = CopyList.splice(1,1);
+  CopyList.splice(CopyList.length,0,CopyListTarget[0]);
+
+  const listTag = CopyList.map((li)=>{
+    return(
       <div className='Login_Sup_Content' key={li.id}>
         <label htmlFor={li.tagId}>{li.title}</label>
         <input type={li.type} id={li.tagId} onChange={(event)=>{
@@ -312,11 +314,11 @@ function ChangePw(){
         }}></input>
       </div>
     );
-  }
+  });
   return(
     <div>
       <LoginHead/>
-      <div className='Sign_Main'>
+      <div className='Login_Main'>
         {listTag}
         <div className='Login_Sup_Content'>
           <input type="button"  value='가입' onClick={()=>{
@@ -330,11 +332,10 @@ function ChangePw(){
               body: JSON.stringify(changePwInfo)
               })
           .then(function(result){
+            console.log(result.token);
             return result.json();
           })
           .then(function(json){
-            setState(json);
-            console.log(state);
             console.log(json);
           })
           }
@@ -347,9 +348,8 @@ function ChangePw(){
 function SignUp(){
   const [signUpInfo, setSignUpInfo] = useState({});
   let [state, setState] = useState({state:0,data:0});
-  var listTag = [];
-  const listitems = LoginSupList.map((li)=>{
-    listTag.push(
+  const listTag = LoginSupList.map((li)=>{
+    return(
     <div className='Login_Sup_Content' key={li.id}>
       <label htmlFor={li.tagId}>{li.title}</label>
       <input type={li.type} id={li.tagId} onChange={(event)=>{
@@ -358,12 +358,11 @@ function SignUp(){
       }}></input>
     </div>
     );
-  })
-  console.log(signUpInfo);
+  });
   return(
     <div>
       <LoginHead/>
-      <div className='Sign_Main'>
+      <div className='Login_Main'>
         {listTag}
         <div className='Login_Sup_Content'>
           <input type="button"  value='가입' onClick={()=>{

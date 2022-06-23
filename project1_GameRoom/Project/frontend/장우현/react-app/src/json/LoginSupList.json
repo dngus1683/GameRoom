@@ -3,5 +3,4 @@
     {"id":2, "title":"비밀번호", "tagId":"SignUp_Content_password", "params":"password", "type": "password"},
     {"id":3, "title":"이름", "tagId":"SignUp_Content_memberName", "params":"memberName", "type": "text"},
     {"id":4, "title":"이메일", "tagId":"SignUp_Content_email", "params":"email", "type": "text"}
-    
 ]
