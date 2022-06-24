@@ -44,7 +44,9 @@
 					<div>${reply.content }</div>
 					<div class="d-flex">
 						<div class="font-italic">작성자 : ${reply.user.username} &nbsp;</div>
+						<a href="/board/${board.id}/${reply.id}/updateForm" class="badge">수정</a>
 						<button onClick="index.replyDelete(${board.id},${reply.id })" class="badge">삭제</button>
+		
 					</div>
 				</li>
 			</c:forEach>

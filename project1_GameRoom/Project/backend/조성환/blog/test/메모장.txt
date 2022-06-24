@@ -1,0 +1,15 @@
+getmapping 글목록	-	메인화면에서 글 보는거
+findAll(pageable) List<board>
+getmapping 글상세보기 	-	글 상세보기
+Optional<board>
+getmapping 글상세보기	-	글 수정할때 보이는거
+Optional<board>
+getmapping 글 저장폼 	-	글 작성하는 곳
+그냥 페이지
+getmapping 글 상세보기	-	글 저장할때 보이는거
+Optional<board>
+
+Ctrl + Shift + / 블록주석
+Ctrl + Shift + \ 블록주석제거
+
+page.content[0].user.id
