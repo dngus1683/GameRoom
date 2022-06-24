@@ -35,6 +35,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
 		String header = request.getHeader(JwtProperties.HEADER_STRING);
 		if(header == null || !header.startsWith(JwtProperties.TOKEN_PREFIX)) {
 			chain.doFilter(request, response);
+			System.out.println("인증이나 권한이 필요한 주소 요청이 됨.");
                         return;
 		}
 		System.out.println("header : "+header);
