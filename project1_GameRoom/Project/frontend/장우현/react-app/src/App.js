@@ -202,7 +202,7 @@ function NoticeBoardPost(){
         <div className='NoticeBoard_post'>
           <h4 className='NoticeBoard_post_reply_head'>댓글</h4><hr/>
           <ul className='NoticeBoard_post_reply_content_ul'>
-            {listTag}
+           
           </ul><hr/>
           <div className='NoticeBoard_post_replySubmit'>
             <div>작성자 아이디</div>
