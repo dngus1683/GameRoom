@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {Route, NavLink, useParams, Routes, BrowserRouter, Link} from 'react-router-dom';
 import menuList from './json/list.json';
 import LoginSupList from './json/LoginSupList.json';
+import VisitorsList from './json/Visitors.json';
 
 let LoginMenuFlag = 0;
 //==========================================================================================================
@@ -65,7 +66,7 @@ function MenuRow(props){
   for(var i=0;i<props.list.length;i++){
     var li = props.list[i];
     listTag.push(
-      <Link to='/NoticeBoard' key={li.id}><div className="menu">{li.title}</div></Link>
+      <Link to={li.path} key={li.id}><div className="menu">{li.title}</div></Link>
     );
   }
   return(
@@ -422,6 +423,43 @@ function SignUp(){
 //==========================================================================================================
 
 //==========================================================================================================
+function Visitors(){
+  return(
+    <div>
+      <VisitorsHead/>
+      <VisitorsMain/>
+    </div>
+  );
+}
+function VisitorsHead(){
+  return(
+    <header>
+      <LoginRow/>
+      <h2 className='NoticeBoard_head'><Link to="/Home">GameRoom</Link></h2>
+    </header>
+  );
+}
+function VisitorsMain(){
+  const listTag = VisitorsList.map((li)=>{
+    return(
+      <div>
+        
+      </div>
+    );
+  });
+  return(
+    <section className='Visitors_Main'>
+      <div className='Visitors_Main_border'>
+
+      </div>
+    </section>
+  );
+}
+
+
+//==========================================================================================================
+
+//==========================================================================================================
 function App() {
   /*
   const [menu, setMenu] = useState([]);
@@ -461,6 +499,7 @@ function App() {
           <Route path='/NoticeBoard' element={<NoticeBoardList/>}></Route>
           <Route path='/NoticeBoard/:post_id' element={<NoticeBoardPost/>}></Route>
           <Route path='/NoticeBoard/edit' element={<NoticeBoardEdit/>}></Route>
+          <Route path='/Visitors' element={<Visitors/>}></Route>
           <Route path="*" element="Not Found"></Route>
         </Routes>
       </BrowserRouter>
