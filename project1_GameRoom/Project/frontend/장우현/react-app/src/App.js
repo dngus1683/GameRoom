@@ -136,7 +136,9 @@ function NoticeBoardList() {
 
 function NoticeBoardPost(){
   let [list, setList] = useState([]);
-  let [replyList, setReplyList] = useState[[]];
+  let [reply, setReply] = useState({});
+  let replyTag = null;
+  var boardId = 0;
   var PostListTag = [];
   var params = useParams();
   var post_id = params.post_id;
@@ -159,10 +161,8 @@ function NoticeBoardPost(){
   })
   .then(function(data){
     setList(data.page.content);
-    setReplyList(data.page.content.replys);
   })
-  },[]);
-  console.log(list);
+  },[list,reply]);
 
   for(var i=0; i<list.length; i++){
     var li = list[i];
@@ -170,17 +170,18 @@ function NoticeBoardPost(){
       <li className='NoticeBoard_sideList_li' key={li.id}><Link to={'/NoticeBoard/'+li.id}>{li.title}</Link></li>
     );
     if(li.id === Number(post_id)){
+      boardId = li.id;
       selected_post = li;
+      replyTag = li.replys.map((rly)=>{
+        return(
+          <li className='NoticeBoard_post_reply_content_li' key={rly.id}>
+            <div className='NoticeBoard_post_reply_head'>댓글 작성자</div>
+            <div>{rly.content}</div>
+          </li> 
+        );
+      })
     }
   }
-  const listTag = replyList.map((li)=>{
-    return(
-      <li className='NoticeBoard_post_reply_content_li' key={li.id}>
-        <div className='NoticeBoard_post_reply_head'>{li.username}</div>
-        <div>{li.content}</div>
-      </li> 
-    );
-  })
   return(
     <div>
       <NoticeBoard/>
@@ -202,12 +203,29 @@ function NoticeBoardPost(){
         <div className='NoticeBoard_post'>
           <h4 className='NoticeBoard_post_reply_head'>댓글</h4><hr/>
           <ul className='NoticeBoard_post_reply_content_ul'>
-           
+           {replyTag}
           </ul><hr/>
           <div className='NoticeBoard_post_replySubmit'>
             <div>작성자 아이디</div>
-            <textarea id='NoticeBoard_post_replySubmit_textarea'></textarea>
-            <input id='NoticeBoard_post_replySubmit_button' type="button" value="등록"/>
+            <textarea id='NoticeBoard_post_replySubmit_textarea' onChange={(event)=>{
+                let CopyReply = {...reply, content:event.target.value}
+                setReply(CopyReply);
+              }}></textarea>
+            <input id='NoticeBoard_post_replySubmit_button' type="button" value="등록" onClick={()=>{
+              fetch('/api/board/'+boardId+'/reply',{
+                method: 'post',
+                headers : { 
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  'Authorization': localStorage.getItem("access_token")
+                },
+                body:JSON.stringify(reply)
+                })
+                .then(function(result){
+                })
+                .then(function(data){
+                })
+            }}/>
           </div>
         </div>
       </section>
