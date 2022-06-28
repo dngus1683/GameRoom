@@ -1,1 +1,2 @@
-https://ovenapp.io/view/VTVkOyyXpaRkdU4oSm8ifeiyNHsEMpUK/
+https://ovenapp.io/view/VTVkOyyXpaRkdU4oSm8ifeiyNHsEMpUK/AIY6o
+(gate, home, 로그인, 게시판(목록, 게시글), 방명록, 비틱방(목록))
