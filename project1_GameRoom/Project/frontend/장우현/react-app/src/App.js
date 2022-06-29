@@ -196,7 +196,24 @@ function NoticeBoardPost(){
             <Link to="/NoticeBoard">목록</Link>
           </span>
           <span id='NoticeBoard_post_menu2'>
-            <Link className='NoticeBoard_post_menu2_content' to="/NoticeBoard">삭제하기</Link>
+            <Link className='NoticeBoard_post_menu2_content' to="/NoticeBoard" onClick={()=>{
+              fetch('/api/board/'+boardId,{
+                method:'delete',
+                headers:{ 
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  'Authorization': localStorage.getItem("access_token")
+                }               
+                })
+                .then(function(result){
+                  if(result.status === 200){
+                    window.location.replace('/NoticeBoard');
+                  }
+                })
+                .then(function(data){
+                })
+              }
+            }>삭제하기</Link>
             <Link className='NoticeBoard_post_menu2_content' to="/NoticeBoard" id='NoticeBoard_post_menu2_content_correction'>수정하기</Link>
           </span>
         </div>
@@ -239,18 +256,40 @@ function NoticeBoardPost(){
 }
 
 function NoticeBoardEdit() {
+  let [edit, setEdit] = useState({});
   return(
     <div>
       <NoticeBoard/>
       <div className="NoticeBoard_Main">
         <div className="NoticeBoard_edit_form">
-              <input type="text" name="username" className="form-control" placeholder="제목" id="NoticeBoard_edit_title"/>
+              <input type="text" name="username" className="form-control" placeholder="제목" id="NoticeBoard_edit_title" onChange={(event)=>{
+                var CopyEdit = {...edit, title:event.target.value}
+                setEdit(CopyEdit);
+              }}/>
         </div>
         <div className="NoticeBoard_edit_form">
-            <textarea className="form-control summernote" id="NoticeBoard_edit_content"></textarea>
+            <textarea className="form-control summernote" id="NoticeBoard_edit_content" onChange={(event)=>{
+              var CopyEdit = {...edit, content:event.target.value}
+              setEdit(CopyEdit);
+            }}></textarea>
         </div>
         <div className="NoticeBoard_edit_form">
-            <input type="button" className="form-control summernote" id="NoticeBoard_edit_button" value="작성"></input>
+            <input type="button" className="form-control summernote" id="NoticeBoard_edit_button" value="작성" onClick={()=>{
+              fetch('/api/board',{
+                method:'post',
+                headers:{ 
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  'Authorization': localStorage.getItem("access_token")
+                },
+                body:JSON.stringify(edit)
+              }).then(function(result){
+                if(result.status === 200){
+                  window.location.replace('/NoticeBoard');
+                }
+              })
+              .then(function(data){})
+            }}></input>
         </div>
       </div>
     </div>
