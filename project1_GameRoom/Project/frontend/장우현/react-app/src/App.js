@@ -1,6 +1,6 @@
 import './App.css';
 import React, {useState, useEffect} from 'react';
-import {Route, NavLink, useParams, Routes, BrowserRouter, Link} from 'react-router-dom';
+import {Route, NavLink, useParams, Routes, BrowserRouter, Link, useLocation} from 'react-router-dom';
 import menuList from './json/list.json';
 import LoginSupList from './json/LoginSupList.json';
 import VisitorsList from './json/Visitors.json';
@@ -214,7 +214,7 @@ function NoticeBoardPost(){
                 })
               }
             }>삭제하기</Link>
-            <Link className='NoticeBoard_post_menu2_content' to="/NoticeBoard" id='NoticeBoard_post_menu2_content_correction'>수정하기</Link>
+            <Link className='NoticeBoard_post_menu2_content' to="/NoticeBoard/edit" state={selected_post} id='NoticeBoard_post_menu2_content_correction'>수정하기</Link>
           </span>
         </div>
         <div className='NoticeBoard_post'>
@@ -238,10 +238,6 @@ function NoticeBoardPost(){
                 },
                 body:JSON.stringify(reply)
                 })
-                .then(function(result){
-                })
-                .then(function(data){
-                })
             }}/>
           </div>
         </div>
@@ -257,26 +253,41 @@ function NoticeBoardPost(){
 
 function NoticeBoardEdit() {
   let [edit, setEdit] = useState({});
+  const location = useLocation();
+  useEffect(()=>{
+    if(location.state){
+      setEdit({
+        title: location.state.title,
+        content: location.state.content
+      })
+    }
+  },[]);
+
+  
   return(
     <div>
       <NoticeBoard/>
       <div className="NoticeBoard_Main">
         <div className="NoticeBoard_edit_form">
-              <input type="text" name="username" className="form-control" placeholder="제목" id="NoticeBoard_edit_title" onChange={(event)=>{
+              <input type="text" name="username" className="form-control" value={edit ? edit.title || "" : null} placeholder= '제목' id="NoticeBoard_edit_title" onChange={(event)=>{
                 var CopyEdit = {...edit, title:event.target.value}
                 setEdit(CopyEdit);
               }}/>
         </div>
         <div className="NoticeBoard_edit_form">
-            <textarea className="form-control summernote" id="NoticeBoard_edit_content" onChange={(event)=>{
+            <textarea className="form-control summernote" id="NoticeBoard_edit_content" value={edit ? edit.content || "": null} onChange={(event)=>{
               var CopyEdit = {...edit, content:event.target.value}
               setEdit(CopyEdit);
             }}></textarea>
         </div>
         <div className="NoticeBoard_edit_form">
             <input type="button" className="form-control summernote" id="NoticeBoard_edit_button" value="작성" onClick={()=>{
-              fetch('/api/board',{
-                method:'post',
+              var boardId = null;
+              if(location.state){
+                boardId = location.state.id;
+              }
+              fetch('/api/board/'+ (boardId ? boardId: ""),{
+                method:(boardId ? 'put' : 'post'),
                 headers:{ 
                   'Content-Type': 'application/json',
                   'Accept': 'application/json',
@@ -287,8 +298,8 @@ function NoticeBoardEdit() {
                 if(result.status === 200){
                   window.location.replace('/NoticeBoard');
                 }
+              }).then(function(data){
               })
-              .then(function(data){})
             }}></input>
         </div>
       </div>
@@ -518,31 +529,6 @@ function VisitorsMain(){
 
 //==========================================================================================================
 function App() {
-  /*
-  const [menu, setMenu] = useState([]);
-  const [post,setPost] = useState([]);
-  const fetch_list = (list,setState)=> {
-    fetch(list,{
-      headers : { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-       }
-      })
-  .then(function(result){
-    return result.json();
-  })
-  .then(function(json){
-    setState(json);
-  })
-  }
-  // useEffect를 사용하지 않고 바로 fetch를 한다면, useState로 인해 rendering이 무한으로 실행된다.
-  // 때문에 앱이 실행될 때, 최초로 한번만 fetch하도록 useEffect를 사용한다.
-  useEffect(() => {
-    fetch_list('list.json',setMenu);
-    fetch_list('PostList.json',setPost);
-  },[menu, post]);
-*/
-
   return (
     <div className="App">
       <BrowserRouter>
