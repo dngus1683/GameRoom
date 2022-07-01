@@ -46,8 +46,8 @@ function LoginMenuNav(){
     <nav className='Login_menu_nav'>
       <ul>
         <li><Link className='Login_menu_link' to="/NoticeBoard">게</Link></li>
-        <li><Link className='Login_menu_link' to="/NoticeBoard">방</Link></li>
-        <li><Link className='Login_menu_link' to="/NoticeBoard">비</Link></li>
+        <li><Link className='Login_menu_link' to="/Visitors">방</Link></li>
+        <li><Link className='Login_menu_link' to="/BoastBoard">비</Link></li>
         <li><Link className='Login_menu_link' to="/NoticeBoard">미</Link></li>
       </ul>
     </nav>
@@ -75,20 +75,19 @@ function MenuRow(props){
     </div>
   );
 }
-
-//==========================================================================================================
-
-//==========================================================================================================
-function NoticeBoard(){
+function BoardHead(){
   LoginMenuFlag = 1;
   return(
     <header>
       <LoginRow/>
-      <h2 className='NoticeBoard_head'><Link to="/Home">GameRoom</Link></h2>
+      <h2 className='Board_head'><Link to="/Home">GameRoom</Link></h2>
     </header>
   );
 }
 
+//==========================================================================================================
+
+//==========================================================================================================
 function NoticeBoardList() {
   let [list, setList] = useState([]);
   useEffect(() => {
@@ -119,7 +118,7 @@ function NoticeBoardList() {
   });
   return(
     <div>
-      <NoticeBoard/>
+      <BoardHead/>
       <div className="NoticeBoard_Main">
         {listTag}
       </div>
@@ -175,7 +174,7 @@ function NoticeBoardPost(){
       replyTag = li.replys.map((rly)=>{
         return(
           <li className='NoticeBoard_post_reply_content_li' key={rly.id}>
-            <div className='NoticeBoard_post_reply_head'>댓글 작성자</div>
+            <div className='NoticeBoard_post_reply_head'>{li.user.username}</div>
             <div>{rly.content}</div>
           </li> 
         );
@@ -184,7 +183,7 @@ function NoticeBoardPost(){
   }
   return(
     <div>
-      <NoticeBoard/>
+      <BoardHead/>
       <section className="NoticeBoard_Main">
         <article className='NoticeBoard_post'>
           <h3>{selected_post.title}</h3><hr/>
@@ -266,7 +265,7 @@ function NoticeBoardEdit() {
   
   return(
     <div>
-      <NoticeBoard/>
+      <BoardHead/>
       <div className="NoticeBoard_Main">
         <div className="NoticeBoard_edit_form">
               <input type="text" name="username" className="form-control" value={edit ? edit.title || "" : null} placeholder= '제목' id="NoticeBoard_edit_title" onChange={(event)=>{
@@ -532,37 +531,139 @@ function SignUp(){
 function Visitors(){
   return(
     <div>
-      <VisitorsHead/>
+      <BoardHead/>
       <VisitorsMain/>
     </div>
   );
 }
-function VisitorsHead(){
-  return(
-    <header>
-      <LoginRow/>
-      <h2 className='NoticeBoard_head'><Link to="/Home">GameRoom</Link></h2>
-    </header>
-  );
-}
 function VisitorsMain(){
-  const listTag = VisitorsList.map((li)=>{
+  let [list, setList] = useState([]);
+  let [content, setContent] = useState({});
+  useEffect(()=>{
+    fetch('/visitors',{
+      method:'get',
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': localStorage.getItem("access_token")
+      }
+    })
+    .then(function(result){
+      return result.json();
+    })
+    .then(function(data){
+      setList(data.page.content);
+    })
+  },[list,content]);
+  const listTag = list.map((li)=>{
     return(
-      <div>
-        
+      <div className="visitors_content" key={li.id}>
+        <h4>{li.user.username}</h4>
+        {li.content}
       </div>
     );
   });
   return(
     <section className='Visitors_Main'>
-      <div className='Visitors_Main_border'>
-
+      <div className="Visitors_Main_border">
+        <div className="Visitors_Main_edit">
+          아이디
+          <br/>
+          <textarea placeholder="내용을 입력해주세요" className="visitors_write" name="아이디" onChange={(event)=>{
+            let CopyContent = {...content, content:event.target.value}
+            setContent(CopyContent);
+          }}></textarea>
+          <input type="button" value="작성" onClick={()=>{
+            fetch('/api/visitors',{
+              method:'post',
+              headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': localStorage.getItem("access_token")
+              },
+              body:JSON.stringify(content)
+            })
+          }}></input>
+        </div>
+        {listTag}
       </div>
     </section>
   );
 }
+//==========================================================================================================
 
+//==========================================================================================================
+function BoastBoard(){
+  return(
+    <div>
+      <BoardHead/>
+      <BoastBoardMain/>
+    </div>
+  );
+}
+function BoastBoardMain(){
+  let [list, setList] = useState([]);
+  const listTag = list.map((li,idx)=>{
+    return(
+      <div className="BoastBoard_Main_BoastBoard">
+        <div className="title">
+          {li.title}
+        </div>
+        <div className="content">
+          {li.content}
+        </div>
+      </div>
+    );
+  })
+  return(
+    <section>
+      <div className="BoastBoard_Main">
+        <div className="top">
+          <div className="BoastBoard_Main_BoastBoard">
+            <div className="title">
+              게시글 제목1
+            </div>
+            <div className="content">
+              게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1
+            </div>
+          </div>
 
+          <div className="BoastBoard_Main_BoastBoard">
+            <div className="title">
+              게시글 제목2
+            </div>
+            <div className="content">
+             게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2
+            </div>
+          </div>
+        </div>
+
+        <div className="bottom">
+          <div className="BoastBoard_Main_BoastBoard">
+            <div className="title">게시글 제목3</div>
+            <div className="content">
+              게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3  
+            </div>
+          </div>
+
+          <div className="BoastBoard_Main_BoastBoard">
+            <div className="title">
+              게시글 제목4
+            </div>
+            <div className="content">
+              게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div className="BoastBoard_Bottom">
+        <div className="content">글쓰기</div>
+      </div>
+    </section>
+  );
+}
 //==========================================================================================================
 
 //==========================================================================================================
@@ -581,6 +682,7 @@ function App() {
           <Route path='/NoticeBoard/:post_id' element={<NoticeBoardPost/>}></Route>
           <Route path='/NoticeBoard/edit' element={<NoticeBoardEdit/>}></Route>
           <Route path='/Visitors' element={<Visitors/>}></Route>
+          <Route path='/BoastBoard' element={<BoastBoard/>}></Route>
           <Route path="*" element="Not Found"></Route>
         </Routes>
       </BrowserRouter>
