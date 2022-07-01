@@ -354,7 +354,13 @@ function LoginMain(){
       })
       .then(function(data){
         let jwtToken = data.headers.get("Authorization");
-        localStorage.setItem("access_token", jwtToken);
+        if(jwtToken){
+          localStorage.setItem("access_token", jwtToken);
+          window.location.replace('/Home');
+        }
+        else{
+          alert("아이디와 비밀번호가 맞지 않습니다.");
+        }
       })
       }}/>
     </div>
@@ -381,7 +387,7 @@ function FindId(){
       <div className='Login_Sup_Content' key={li.id}>
         <label htmlFor={li.tagId}>{li.title}</label>
         <input type={li.type} id={li.tagId} onChange={(event)=>{
-          let CopysFindIdInfo = {...findIdInfo, [li.type]:event.target.value}
+          let CopysFindIdInfo = {...findIdInfo, [li.params]:event.target.value}
           setFindIdInfo(CopysFindIdInfo);
         }}></input>
       </div>
@@ -393,12 +399,33 @@ function FindId(){
       <div className='Login_Main'>
         {listTag}
         <div className='Login_Sup_Content'>
-          <input type="button"  value='조회'></input>
+          <input type="button"  value='조회' onClick={()=>{
+            fetch('/auth/findId',{
+              method:'post',
+              headers:{ 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              body:JSON.stringify(findIdInfo)
+            }).then(function(result){
+              return result.json();
+            })
+            .then(function(data){
+              if(data.data === "아이디 찾기 실패"){
+                alert("해당 정보에 맞는 아이디가 존재하지 않습니다.");
+              }
+              else{
+                alert("귀하의 아이디는 " + data.userId + " 입니다.");
+                window.location.replace('/Login');
+              }
+            });
+          }}></input>
         </div>
       </div>
     </div>
   );
 }
+
 function ChangePw(){
   let [changePwInfo, setChangePwInfo] = useState({});
   var CopyList = [...LoginSupList];
@@ -410,7 +437,7 @@ function ChangePw(){
       <div className='Login_Sup_Content' key={li.id}>
         <label htmlFor={li.tagId}>{li.title}</label>
         <input type={li.type} id={li.tagId} onChange={(event)=>{
-          let CopyChangePwInfo = {...changePwInfo, [li.type]:event.target.value}
+          let CopyChangePwInfo = {...changePwInfo, [li.params]:event.target.value}
           setChangePwInfo(CopyChangePwInfo);
         }}></input>
       </div>
@@ -423,9 +450,8 @@ function ChangePw(){
         {listTag}
         <div className='Login_Sup_Content'>
           <input type="button"  value='가입' onClick={()=>{
-            console.log(changePwInfo);
-            fetch('/auth/joinProc',{
-              method: 'post',
+            fetch('/auth/changePw',{
+              method: 'put',
               headers : { 
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -433,11 +459,16 @@ function ChangePw(){
               body: JSON.stringify(changePwInfo)
               })
           .then(function(result){
-            console.log(result);
             return result.json();
           })
-          .then(function(json){
-            console.log(json);
+          .then(function(data){
+            if(data === 1){
+              alert("비밀번호가 변경되었습니다.");
+              window.location.replace('/Login');
+            }
+            else{
+              alert("해당 회원정보는 존재하지 않습니다.");
+            }
           })
           }
           }></input>
@@ -478,8 +509,15 @@ function SignUp(){
           .then(function(result){
             return result.json();
           })
-          .then(function(json){
-            console.log(json);
+          .then(function(data){
+            console.log(data);
+            if(data.status === 500){
+              alert("이미 가입된 회원입니다.");
+            }
+            else{
+              alert("회원가입이 완료되었습니다.");
+              window.location.replace('/Login');
+            }
           })
           }
           }></input>
