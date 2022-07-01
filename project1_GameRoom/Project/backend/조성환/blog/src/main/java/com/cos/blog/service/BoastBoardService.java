@@ -55,10 +55,15 @@ public class BoastBoardService {
 	}
 
 	@Transactional
-	public void 글수정하기(int id, BoastBoard requestBoastBoard) {
+	public void 글수정하기(int id, BoastBoard requestBoastBoard, PrincipalDetail principal) {
 		BoastBoard boastBoard = boastBoardRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("글 찾기 실패 : 아이디를 찾을 수 없습니다.");
 		});	//영속화 완료
+		
+		if (boastBoard.getUser().getId() != principal.getUser().getId()) {
+			throw new IllegalStateException("글 수정 실패 : 해당 글을 수정할 권한이 없습니다.");
+		}
+		
 		boastBoard.setTitle(requestBoastBoard.getTitle());
 		boastBoard.setContent(requestBoastBoard.getContent());
 		// 해당 함수 종료시(Service가 종료될 때) 트랜잭션이 종료됩니다. 이때 더티체킹 - 자동 업데이트. db flush
@@ -71,15 +76,28 @@ public class BoastBoardService {
 	}
 	
 	@Transactional
-	public void 댓글삭제(int replyId) {
+	public void 댓글삭제(int replyId, PrincipalDetail principal) {
+		BoastBoardReply boastboardreply = boastBoardReplyRepository.findById(replyId).orElseThrow(() -> {
+			return new IllegalArgumentException("댓글 찾기 실패 : 아이디를 찾을 수 없습니다.");
+		});
+		
+		if (boastboardreply.getUser().getId() != principal.getUser().getId()) {
+			throw new IllegalStateException("댓글 삭제 실패 : 댓글을 삭제할 권한이 없습니다.");
+		}
+		
 		boastBoardReplyRepository.deleteById(replyId);
 	}
 	
 	@Transactional
-	public void 댓글수정하기(int replyId, BoastBoardReply requestboastboardreply) {
+	public void 댓글수정하기(int replyId, BoastBoardReply requestboastboardreply, PrincipalDetail principal) {
 		BoastBoardReply boastboardreply = boastBoardReplyRepository.findById(replyId).orElseThrow(() -> {
 			return new IllegalArgumentException("댓글 찾기 실패 : 아이디를 찾을 수 없습니다.");
 		});	//영속화 완료
+		
+		if (boastboardreply.getUser().getId() != principal.getUser().getId()) {
+			throw new IllegalStateException("댓글 수정 실패 : 댓글을 수정할 권한이 없습니다.");
+		}
+		
 		boastboardreply.setContent(requestboastboardreply.getContent());
 		System.out.println("댓글 수정 완료");
 	}

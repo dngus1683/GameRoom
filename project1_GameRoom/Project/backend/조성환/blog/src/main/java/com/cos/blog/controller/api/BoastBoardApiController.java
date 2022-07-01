@@ -38,11 +38,11 @@ public class BoastBoardApiController {
 	}
 	
 	@PutMapping("/api/boastBoard/{id}")
-	public   ResponseDto<Integer> update(@PathVariable int id, @RequestBody BoastBoard boastBoard){
+	public   ResponseDto<Integer> update(@PathVariable int id, @RequestBody BoastBoard boastBoard, @AuthenticationPrincipal PrincipalDetail principal){
 		System.out.println("BoastBoardApiController : update : id : " + id);
 		System.out.println("BoastBoardApiController : update : id : " + boastBoard.getTitle());
 		System.out.println("BoastBoardApiController : update : id : " + boastBoard.getContent());
-		boastBoardService.글수정하기(id, boastBoard);
+		boastBoardService.글수정하기(id, boastBoard, principal);
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);	
 	}
 
@@ -58,8 +58,8 @@ public class BoastBoardApiController {
 	}
 	
 	@DeleteMapping("/api/boastBoard/{boastBoardId}/reply/{replyId}")
-	public ResponseDto<Integer> replyDelete(@PathVariable int replyId){
-		boastBoardService.댓글삭제(replyId);
+	public ResponseDto<Integer> replyDelete(@PathVariable int replyId, @AuthenticationPrincipal PrincipalDetail principal){
+		boastBoardService.댓글삭제(replyId, principal);
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); // 1 return 하면 정상
 	}
 	
@@ -67,7 +67,7 @@ public class BoastBoardApiController {
 	@PutMapping("/api/boastBoard/{boastBoardId}/reply/{replyId}")
 	public  ResponseDto<Integer> replyUpdate(@PathVariable int replyId, @RequestBody BoastBoardReply boastboardreply, @AuthenticationPrincipal PrincipalDetail principal){	
 		System.out.println("api들어옴");
-		boastBoardService.댓글수정하기(replyId, boastboardreply);
+		boastBoardService.댓글수정하기(replyId, boastboardreply, principal);
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	}
 	
