@@ -2,6 +2,7 @@ package com.cos.blog.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cos.blog.dto.FindIdresponseDto;
 import com.cos.blog.dto.ResponseDto;
 import com.cos.blog.model.User;
 import com.cos.blog.service.UserService;
@@ -29,7 +31,7 @@ public class UserApiController {
 	
 	@PostMapping("/auth/joinProc")
 	public ResponseEntity<?> save(@RequestBody User user) {	//User로 받는것: username, password, email
-		System.out.println("UserApiController : save 호출됨");
+		System.out.println("UserApiController : save 호출됨"+user.getUsername());
 		userService.회원가입(user);	// 1이면 성공,아니면 실패
 		return new ResponseEntity<>(1, HttpStatus.OK);	//자바오브젝트를 JSON으로 변환해서 리턴
 	}
@@ -49,12 +51,13 @@ public class UserApiController {
 		return new ResponseEntity<>(1, HttpStatus.OK);
 	}
 	
-	@GetMapping("/auth/findId")
-	public ResponseEntity<?> findId(@RequestBody User user) {
+	@PostMapping(path = "/auth/findId", produces = MediaType.APPLICATION_JSON_VALUE)
+	public FindIdresponseDto findId(@RequestBody User user) {
 		System.out.println("UserApiController : findId 호출됨");
-		
-		return new ResponseEntity<>(userService.아이디찾기(user), HttpStatus.OK);
-			
+		String id = userService.아이디찾기(user);
+		 FindIdresponseDto  findIdresponseDto = new FindIdresponseDto();
+		 findIdresponseDto.setUserId(id);
+		return findIdresponseDto;
 	}
 	
 	@PutMapping("/auth/changePw")
