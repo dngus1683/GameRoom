@@ -70,8 +70,8 @@ public class BoardService {
 	}
 	
 	@Transactional
-	public void 댓글쓰기(ReplySaveRequestDto replySaveRequestDto) {
-		int result = replyRepository.mSave(replySaveRequestDto.getUserId(), replySaveRequestDto.getBoardId(), replySaveRequestDto.getContent());
+	public void 댓글쓰기(int boardId,Reply reply,User user) {
+		int result = replyRepository.mSave(user.getId(),boardId,reply.getContent());
 		System.out.println("BoardService : "+result);
 	}
 	
