@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {Route, NavLink, useParams, Routes, BrowserRouter, Link, useLocation} from 'react-router-dom';
 import menuList from './json/list.json';
 import LoginSupList from './json/LoginSupList.json';
-import VisitorsList from './json/Visitors.json';
+import BoastList from './json/boastTestList.json';
 
 let LoginMenuFlag = 0;
 //==========================================================================================================
@@ -122,9 +122,9 @@ function NoticeBoardList() {
       <div className="NoticeBoard_Main">
         {listTag}
       </div>
-      <div className='NoticeBoard_bottom'>
+      <div className='NoticeBoast_bottom'>
         <Link to="/NoticeBoard/edit">
-          <div className='NoticeBoard_edit'>
+          <div className='edit'>
             글쓰기
           </div>
         </Link>
@@ -603,63 +603,46 @@ function BoastBoard(){
 }
 function BoastBoardMain(){
   let [list, setList] = useState([]);
-  const listTag = list.map((li,idx)=>{
-    return(
-      <div className="BoastBoard_Main_BoastBoard">
-        <div className="title">
-          {li.title}
+  const listTag = BoastList.map((li,idx,FullList)=>{
+    if(idx%2 === 1){
+      return false;
+    }
+    else{
+      var semiList = [li,FullList[idx+1]];
+      const semiListTag = semiList.map((semiLi, semiIdx)=>{
+        if(!semiLi){
+          semiLi = {title:"", content:""}
+        }
+        return(
+          <div className="BoastBoard_Main_BoastBoard" key={semiIdx}>
+            <div className="title">
+              {semiLi.title}
+            </div>
+            <div className="content">
+              {semiLi.content}
+            </div>
+          </div>
+        );
+      })
+      return(
+        <div className="row" key={idx}>
+          {semiListTag}
         </div>
-        <div className="content">
-          {li.content}
-        </div>
-      </div>
-    );
+      );
+    }
   })
   return(
     <section>
       <div className="BoastBoard_Main">
-        <div className="top">
-          <div className="BoastBoard_Main_BoastBoard">
-            <div className="title">
-              게시글 제목1
-            </div>
-            <div className="content">
-              게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1 게시글 내용1
-            </div>
-          </div>
-
-          <div className="BoastBoard_Main_BoastBoard">
-            <div className="title">
-              게시글 제목2
-            </div>
-            <div className="content">
-             게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2 게시글 내용2
-            </div>
-          </div>
-        </div>
-
-        <div className="bottom">
-          <div className="BoastBoard_Main_BoastBoard">
-            <div className="title">게시글 제목3</div>
-            <div className="content">
-              게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3 게시글 내용3  
-            </div>
-          </div>
-
-          <div className="BoastBoard_Main_BoastBoard">
-            <div className="title">
-              게시글 제목4
-            </div>
-            <div className="content">
-              게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4 게시글 내용4
-            </div>
-          </div>
-        </div>
-
+        {listTag}
       </div>
 
-      <div className="BoastBoard_Bottom">
-        <div className="content">글쓰기</div>
+      <div className='NoticeBoast_bottom'>
+        <Link to="/BoastBoard/edit">
+          <div className='edit'>
+            글쓰기
+          </div>
+        </Link>
       </div>
     </section>
   );

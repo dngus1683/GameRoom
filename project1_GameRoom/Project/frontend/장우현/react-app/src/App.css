@@ -112,7 +112,7 @@ h1 {
   position: relative;
   
 }
-.NoticeBoard_bottom {
+.NoticeBoast_bottom {
   height: 100px;
   
 }
@@ -189,7 +189,7 @@ h1 {
   margin: 10px;
   padding-bottom: 10px;
 }
-.NoticeBoard_edit {
+.NoticeBoast_bottom .edit {
   border:1px solid #ffe3eb;
   width: 100px;
   height: 50px;
@@ -205,7 +205,7 @@ h1 {
   transition-timing-function: linear;
   transition-duration: 0.3s;
 }
-.NoticeBoard_edit:hover {
+.NoticeBoast_bottom .edit:hover {
   background-color: #ffc1d2;
   border-color: #ffc1d2;
 }
@@ -344,18 +344,11 @@ h1 {
 .BoastBoard_Main {
   width: 60%;
   margin: 0 auto;
-  height: 600px;
+  height: 100%;
   border: 1px solid red;
 }
 
-.BoastBoard_Main .top {
-  display: flex;
-  margin-top: 20px;
-  justify-content: center;
-  height: 50%;
-}
-
-.BoastBoard_Main .bottom {
+.BoastBoard_Main .row {
   display: flex;
   margin-top: 20px;
   justify-content: center;
