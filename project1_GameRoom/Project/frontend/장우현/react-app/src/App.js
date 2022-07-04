@@ -614,14 +614,16 @@ function BoastBoardMain(){
           semiLi = {title:"", content:""}
         }
         return(
-          <div className="BoastBoard_Main_BoastBoard" key={semiIdx}>
-            <div className="title">
-              {semiLi.title}
-            </div>
-            <div className="content">
-              {semiLi.content}
-            </div>
-          </div>
+          <Link to={"/BoastBoard/"+semiLi.id} key={semiIdx}>
+            <article className="BoastBoard_Main_BoastBoard">
+              <div className="title">
+                {semiLi.title}
+              </div>
+              <div className="content">
+                {semiLi.content}
+              </div>
+            </article>
+          </Link>
         );
       })
       return(
@@ -647,6 +649,178 @@ function BoastBoardMain(){
     </section>
   );
 }
+function BoastBoardPost(){
+  let [list, setList] = useState([]);
+  let [reply, setReply] = useState({});
+  let replyTag = null;
+  var boardId = 0;
+  var PostListTag = [];
+  var params = useParams();
+  var post_id = params.post_id;
+  var selected_post = {
+    title:'Sorry',
+    content:'Not Found'
+  }
+
+  useEffect(() => {
+    fetch('/board',{
+      method: 'get',
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': localStorage.getItem("access_token")
+      }
+      })
+  .then(function(result){
+    return result.json();
+  })
+  .then(function(data){
+    setList(data.page.content);
+  })
+  },[list,reply]);
+
+  for(var i=0; i<list.length; i++){
+    var li = list[i];
+    PostListTag.push(
+      <li className='NoticeBoard_sideList_li' key={li.id}><Link to={'/BoastBoard/'+li.id}>{li.title}</Link></li>
+    );
+    if(li.id === Number(post_id)){
+      boardId = li.id;
+      selected_post = li;
+      replyTag = li.replys.map((rly)=>{
+        return(
+          <li className='NoticeBoard_post_reply_content_li' key={rly.id}>
+            <div className='NoticeBoard_post_reply_head'>{li.user.username}</div>
+            <div>{rly.content}</div>
+          </li> 
+        );
+      })
+    }
+  }
+  return(
+    <div>
+      <BoardHead/>
+      <section className="NoticeBoard_Main">
+        <article className='NoticeBoard_post'>
+          <h3>{selected_post.title}</h3><hr/>
+          {selected_post.content}
+        </article>
+        <div className='NoticeBoard_post'>
+          <span id='NoticeBoard_post_menu1'>
+            <input type="button" id='NoticeBoard_post_menu1_button' value="좋아요"/>
+            <Link to="/BoastBoard">목록</Link>
+          </span>
+          <span id='NoticeBoard_post_menu2'>
+            <Link className='NoticeBoard_post_menu2_content' to="/BoastBoard" onClick={()=>{
+              fetch('/api/boastBoard/'+boardId,{
+                method:'delete',
+                headers:{ 
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  'Authorization': localStorage.getItem("access_token")
+                }               
+                })
+                .then(function(result){
+                  if(result.status === 200){
+                    window.location.replace('/BoastBoard');
+                  }
+                })
+                .then(function(data){
+                })
+              }
+            }>삭제하기</Link>
+            <Link className='NoticeBoard_post_menu2_content' to="/BoastBoard/edit" state={selected_post} id='NoticeBoard_post_menu2_content_correction'>수정하기</Link>
+          </span>
+        </div>
+        <div className='NoticeBoard_post'>
+          <h4 className='NoticeBoard_post_reply_head'>댓글</h4><hr/>
+          <ul className='NoticeBoard_post_reply_content_ul'>
+           {replyTag}
+          </ul><hr/>
+          <div className='NoticeBoard_post_replySubmit'>
+            <div>작성자 아이디</div>
+            <textarea id='NoticeBoard_post_replySubmit_textarea' onChange={(event)=>{
+                let CopyReply = {...reply, content:event.target.value}
+                setReply(CopyReply);
+              }}></textarea>
+            <input id='NoticeBoard_post_replySubmit_button' type="button" value="등록" onClick={()=>{
+              fetch('/api/boastBoard/'+boardId+'/reply',{
+                method: 'post',
+                headers : { 
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  'Authorization': localStorage.getItem("access_token")
+                },
+                body:JSON.stringify(reply)
+                })
+            }}/>
+          </div>
+        </div>
+      </section>
+      <aside className='NoticeBoard_sideList'>
+        <ul className='NoticeBoard_sideList_ul'>
+          {PostListTag}
+        </ul>
+      </aside>
+    </div>
+  );
+}
+
+function BoastBoardEdit() {
+  let [edit, setEdit] = useState({});
+  const location = useLocation();
+  useEffect(()=>{
+    if(location.state){
+      setEdit({
+        title: location.state.title,
+        content: location.state.content
+      })
+    }
+  },[]);
+
+  
+  return(
+    <div>
+      <BoardHead/>
+      <div className="NoticeBoard_Main">
+        <div className="NoticeBoard_edit_form">
+              <input type="text" name="username" className="form-control" value={edit ? edit.title || "" : null} placeholder= '제목' id="NoticeBoard_edit_title" onChange={(event)=>{
+                var CopyEdit = {...edit, title:event.target.value}
+                setEdit(CopyEdit);
+              }}/>
+        </div>
+        <div className="NoticeBoard_edit_form">
+            <textarea className="form-control summernote" id="NoticeBoard_edit_content" value={edit ? edit.content || "": null} onChange={(event)=>{
+              var CopyEdit = {...edit, content:event.target.value}
+              setEdit(CopyEdit);
+            }}></textarea>
+        </div>
+        <div className="NoticeBoard_edit_form">
+            <input type="button" className="form-control summernote" id="NoticeBoard_edit_button" value="작성" onClick={()=>{
+              var boardId = null;
+              if(location.state){
+                boardId = location.state.id;
+              }
+              fetch('/api/boastBoard/'+ (boardId ? boardId: ""),{
+                method:(boardId ? 'put' : 'post'),
+                headers:{ 
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  'Authorization': localStorage.getItem("access_token")
+                },
+                body:JSON.stringify(edit)
+              }).then(function(result){
+                if(result.status === 200){
+                  window.location.replace('/BoastBoard');
+                }
+              }).then(function(data){
+              })
+            }}></input>
+        </div>
+      </div>
+    </div>
+  );
+}
 //==========================================================================================================
 
 //==========================================================================================================
@@ -666,6 +840,8 @@ function App() {
           <Route path='/NoticeBoard/edit' element={<NoticeBoardEdit/>}></Route>
           <Route path='/Visitors' element={<Visitors/>}></Route>
           <Route path='/BoastBoard' element={<BoastBoard/>}></Route>
+          <Route path='/BoastBoard/:post_id' element={<BoastBoardPost/>}></Route>
+          <Route path='/BoastBoard/edit' element={<BoastBoardEdit/>}></Route>
           <Route path="*" element="Not Found"></Route>
         </Routes>
       </BrowserRouter>

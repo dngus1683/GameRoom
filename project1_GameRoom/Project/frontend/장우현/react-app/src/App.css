@@ -345,7 +345,6 @@ h1 {
   width: 60%;
   margin: 0 auto;
   height: 100%;
-  border: 1px solid red;
 }
 
 .BoastBoard_Main .row {
@@ -356,11 +355,19 @@ h1 {
 }
 
 .BoastBoard_Main_BoastBoard {
-  width: 200px;
-  height: 200px;
-  margin: 0 auto;
+  width: 250px;
+  height: 250px;
+  padding: 20px;
+  margin: 80px ;
+  transition-property: all;
+  transition-timing-function: linear;
+  transition-duration: 0.3s;
 }
-
+.BoastBoard_Main_BoastBoard:hover {
+  border-radius: 50px;
+  background-color: #ffc1d2;
+  border-color: #ffc1d2;
+}
 .BoastBoard_Main_BoastBoard .title {
   height: 20%;
   font-size: 20px;
